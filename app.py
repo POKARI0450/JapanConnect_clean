@@ -3,6 +3,8 @@ import time
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+# 修正後
+from urllib.parse import quote as url_quote
 
 app = Flask(__name__)
 app.config.update(
