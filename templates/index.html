@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JapanConnect - ヘルパー検索</title>
+  <!-- Google Fonts: Noto Serif JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- キャッシュバスティング付きカスタムCSS -->
+  <link rel="stylesheet" href="{{ static_css() }}">
+</head>
+<body>
+  <header class="sakura-header">
+    <div class="container text-center">
+      <h1>JapanConnect 🌸</h1>
+      <p>Connecting International Visitors with Local Helpers</p>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <section class="request-form">
+      <h2 class="mb-4 text-center">Get Assistance Now</h2>
+      <form action="{{ url_for('create_request') }}" method="POST">
+        <div class="mb-3">
+          <label for="category" class="form-label">I need help with:</label>
+          <!-- 選択肢を含める -->
+          <select name="category" id="category" class="form-select" required>
+            <option value="ticket">Ticket（切符の購入や乗り換え）</option>
+            <option value="food">Finding Food（美味しい食事・レストラン）</option>
+            <option value="culture">Experience Culture（日本文化体験）</option>
+            <option value="translation">Translation Help（翻訳サポート）</option>
+            <option value="other">Other（その他）</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="location" class="form-label">Current Location:</label>
+          <input type="text" name="location" id="location" class="form-control" placeholder="例: 東京都" required>
+        </div>
+        <div class="mb-3">
+          <label for="language" class="form-label">Preferred Language:</label>
+          <select name="language" id="language" class="form-select" required>
+            <option value="english">English</option>
+            <option value="chinese">Chinese</option>
+            <option value="korean">Korean</option>
+            <option value="spanish">Spanish</option>
+          </select>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Find Helper Now</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <p>&copy; 2025 JapanConnect - All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

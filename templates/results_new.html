@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ヘルパー検索結果</title>
+  <!-- Google Fonts: Noto Serif JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- キャッシュバスティング付きカスタムCSS -->
+  <link rel="stylesheet" href="{{ static_css() }}">
+  <style>
+    /* カード内の詳細情報の入れ子表示（ここでは省略するか、別途モーダル等にする） */
+  </style>
+</head>
+<body>
+  <header class="sakura-header">
+    <div class="container text-center">
+      <h1>ヘルパー検索結果</h1>
+      <p>{{ location }}で「{{ category }}」を対応できるヘルパー</p>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <div class="row">
+      {% for helper in helpers %}
+      <div class="col-md-4 mb-4">
+        <div class="card helper-card rounded-lg shadow-lg bg-white p-4">
+          <!-- プロフィール写真 -->
+          <div style="aspect-ratio: 1/1; overflow: hidden; border-radius: 0.5rem;">
+            <img src="{{ url_for('static', filename='images/' ~ helper.photo) }}" alt="{{ helper.username }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+          </div>
+          <!-- 基本情報 -->
+          <div class="mt-3">
+            <h3 class="h5">{{ helper.username }}</h3>
+            <p>評価: 
+              {% for i in range(5) %}
+                {% if i < helper.rating|int %}★{% else %}☆{% endif %}
+              {% endfor %}
+              ({{ "%.1f"|format(helper.rating) }})
+            </p>
+            <p>言語: {{ helper.languages|join(', ') }}</p>
+          </div>
+          <!-- 詳細を見るボタン（プロフィールページへリンク） -->
+          <div class="text-end">
+            <a href="{{ url_for('profile', helper_id=helper.id) }}" class="btn btn-primary btn-sm">詳細を見る</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <p>&copy; 2025 JapanConnect - All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
