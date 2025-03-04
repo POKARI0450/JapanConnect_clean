@@ -1,0 +1,372 @@
+{% extends "layout.html" %}
+
+{% block title %}ガイド登録 - JapanConnect{% endblock %}
+
+{% block additional_styles %}
+.signup-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.signup-description {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-control {
+    height: 50px;
+    padding-left: 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(160, 82, 45, 0.25);
+}
+
+.form-icon {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: var(--primary-color);
+}
+
+textarea.form-control {
+    height: auto;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+textarea.form-control + .form-icon {
+    top: 15px;
+}
+
+.btn-signup {
+    background-color: var(--primary-color);
+    border: none;
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn-signup:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(160, 82, 45, 0.3);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.login-link a:hover {
+    color: var(--dark-color);
+    text-decoration: underline;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.skill-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.skill-badge {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    border-radius: 50px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.skill-badge i {
+    margin-left: 5px;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.skill-badge i:hover {
+    color: var(--accent-color);
+}
+
+.add-skill {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.add-skill input {
+    flex: 1;
+    height: 40px;
+    padding-left: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.add-skill button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 15px;
+    font-size: 0.9rem;
+}
+
+.add-skill button:hover {
+    background-color: var(--accent-color);
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1 class="signup-title">ガイドとして登録</h1>
+            <p class="signup-description">あなたの知識と経験を活かして、旅行者をサポートしましょう</p>
+        </div>
+        
+        <form action="{{ url_for('guide_signup') }}" method="POST">
+            <div class="form-group">
+                <i class="fas fa-user form-icon"></i>
+                <input type="text" id="username" name="username" class="form-control" placeholder="ユーザー名" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-envelope form-icon"></i>
+                <input type="email" id="email" name="email" class="form-control" placeholder="メールアドレス" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-lock form-icon"></i>
+                <input type="password" id="password" name="password" class="form-control" placeholder="パスワード" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-map-marker-alt form-icon"></i>
+                <select class="form-control" id="region" name="region" required>
+                    <option value="" disabled selected>活動地域を選択</option>
+                    <option value="東京">東京</option>
+                    <option value="大阪">大阪</option>
+                    <option value="京都">京都</option>
+                    <option value="北海道">北海道</option>
+                    <option value="沖縄">沖縄</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-language form-icon"></i>
+                <select class="form-control" id="language" name="language" required>
+                    <option value="" disabled selected>対応言語を選択</option>
+                    <option value="English">English（英語）</option>
+                    <option value="Chinese">Chinese（中国語）</option>
+                    <option value="Korean">Korean（韓国語）</option>
+                    <option value="Spanish">Spanish（スペイン語）</option>
+                    <option value="French">French（フランス語）</option>
+                    <option value="Other">Other（その他）</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-info-circle form-icon"></i>
+                <textarea class="form-control" id="intro" name="intro" rows="4" placeholder="自己紹介（あなたの経験や特技、サポートできることなど）"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">サポート可能な内容（複数選択可）</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="support_ticket" name="support_types" value="Ticket">
+                            <label class="form-check-label" for="support_ticket">切符の購入や乗り換え</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="support_restaurant" name="support_types" value="Restaurant">
+                            <label class="form-check-label" for="support_restaurant">レストランでの注文や予約</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="support_shopping" name="support_types" value="Shopping">
+                            <label class="form-check-label" for="support_shopping">買い物のサポート</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="support_direction" name="support_types" value="Direction">
+                            <label class="form-check-label" for="support_direction">道案内</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="support_translation" name="support_types" value="Translation">
+                            <label class="form-check-label" for="support_translation">翻訳サポート</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="support_other" name="support_types" value="Other">
+                            <label class="form-check-label" for="support_other">その他</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">スキルや資格（任意）</label>
+                <div class="skill-badges" id="skillBadges">
+                    <!-- スキルバッジがここに追加されます -->
+                </div>
+                <div class="add-skill">
+                    <input type="text" id="newSkill" placeholder="例: TOEIC 900点、英検準1級など">
+                    <button type="button" id="addSkillBtn">追加</button>
+                </div>
+                <input type="hidden" id="skills" name="skills" value="">
+            </div>
+            
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-check-label" for="terms">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">利用規約</a>に同意します
+                </label>
+            </div>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-signup">ガイドとして登録</button>
+            </div>
+        </form>
+        
+        <p class="login-link">既にアカウントをお持ちですか？ <a href="{{ url_for('login') }}">ログインはこちら</a></p>
+    </div>
+</div>
+
+<!-- 利用規約モーダル -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">利用規約</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. サービス概要</h6>
+                <p>JapanConnectは、日本を訪れる外国人旅行者と日本人ガイドをつなぐプラットフォームです。</p>
+                
+                <h6>2. ガイドの責任</h6>
+                <p>ガイドは、旅行者に対して誠実かつ丁寧なサポートを提供する責任があります。</p>
+                
+                <h6>3. 禁止事項</h6>
+                <p>以下の行為は禁止されています：</p>
+                <ul>
+                    <li>違法行為の手助けや推奨</li>
+                    <li>差別的言動</li>
+                    <li>ハラスメント行為</li>
+                    <li>虚偽の情報提供</li>
+                </ul>
+                
+                <h6>4. 報酬</h6>
+                <p>ガイドへの報酬は、プラットフォームを通じて支払われます。直接の金銭のやり取りは禁止されています。</p>
+                
+                <h6>5. キャンセルポリシー</h6>
+                <p>予定の24時間前までのキャンセルは無料です。それ以降のキャンセルには、キャンセル料が発生する場合があります。</p>
+                
+                <h6>6. プライバシー</h6>
+                <p>ユーザー情報は、プライバシーポリシーに従って適切に管理されます。</p>
+                
+                <h6>7. アカウント停止</h6>
+                <p>利用規約に違反した場合、アカウントが停止される場合があります。</p>
+                
+                <h6>8. 免責事項</h6>
+                <p>当社は、ユーザー間のトラブルについて一切の責任を負いません。</p>
+                
+                <h6>9. 規約の変更</h6>
+                <p>当社は、必要に応じて本規約を変更することがあります。変更後の利用継続は、新しい規約への同意とみなされます。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">同意する</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // スキル追加機能
+    document.getElementById('addSkillBtn').addEventListener('click', function() {
+        const newSkill = document.getElementById('newSkill').value.trim();
+        if (newSkill) {
+            addSkillBadge(newSkill);
+            document.getElementById('newSkill').value = '';
+            updateSkillsInput();
+        }
+    });
+    
+    // Enterキーでもスキル追加
+    document.getElementById('newSkill').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('addSkillBtn').click();
+        }
+    });
+    
+    function addSkillBadge(skill) {
+        const skillBadges = document.getElementById('skillBadges');
+        const badge = document.createElement('span');
+        badge.className = 'skill-badge';
+        badge.innerHTML = `${skill} <i class="fas fa-times" onclick="removeSkill(this)"></i>`;
+        skillBadges.appendChild(badge);
+    }
+    
+    function removeSkill(element) {
+        element.parentElement.remove();
+        updateSkillsInput();
+    }
+    
+    function updateSkillsInput() {
+        const badges = document.querySelectorAll('.skill-badge');
+        const skills = Array.from(badges).map(badge => badge.textContent.trim());
+        document.getElementById('skills').value = skills.join(',');
+    }
+</script>
+{% endblock %} 

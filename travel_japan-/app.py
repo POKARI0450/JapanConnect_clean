@@ -124,14 +124,35 @@ def index():
     ]
     return render_template('index.html', helpers=helpers)
 
-# 検索ページのルート
+# 検索ページ：/search
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     # すべてのヘルパーを取得
     helpers = User.query.filter_by(is_helper=True).all()
     
-    # 検索結果ページを直接表示
-    return render_template('search_results.html', helpers=helpers)
+    # リクエストがPOSTの場合（フォーム送信時）
+    if request.method == 'POST':
+        # POSTデータを取得
+        help_type = request.form.get('help_type', '')
+        location = request.form.get('location', '')
+        language = request.form.get('language', '')
+        details = request.form.get('details', '')
+        
+        # 検索結果ページを表示
+        return render_template('search_results.html', 
+                              helpers=helpers, 
+                              help_type=help_type,
+                              location=location,
+                              language=language,
+                              details=details)
+    
+    # GETリクエストの場合
+    if request.args.get('show_results') == 'true':
+        # 検索結果ページを表示
+        return render_template('search_results.html', helpers=helpers)
+    else:
+        # 検索フォームを表示
+        return render_template('search.html')
 
 # ヘルプリクエストページ
 @app.route('/help_request')

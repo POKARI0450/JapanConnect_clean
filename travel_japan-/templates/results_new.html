@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ヘルパー検索結果 - JapanConnect</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- 静的CSSの参照 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* ヘルパーカードの基本設定 */
+    .helper-card {
+      transition: transform 0.3s ease;
+      margin-bottom: 20px;
+    }
+    .helper-card:hover {
+      transform: scale(1.03);
+    }
+    /* 画像コンテナのサイズ固定 */
+    .card-img-container {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      border-radius: 0.5rem;
+    }
+    .card-img-container img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+    /* カード内のボタン配置 */
+    .card-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    /* フッター */
+    footer.site-footer {
+      margin-top: 30px;
+      padding: 20px 0;
+      background-color: #f8f9fa;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- ナビゲーションバー -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">JapanConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">ホーム</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('search') }}">検索</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('pricing') }}">料金プラン</a></li>
+          {% if current_user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', helper_id=current_user.id) }}">マイプロフィール</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">ログアウト</a></li>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">ログイン</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">登録</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- ヘッダー -->
+  <header class="container my-4">
+    <div class="text-center">
+      <h1>ヘルパー検索結果</h1>
+      <p>{{ location }}で「{{ category }}」に対応できるヘルパー</p>
+    </div>
+  </header>
+  
+  <!-- メインコンテンツ -->
+  <main class="container">
+    {% if helpers %}
+      <div class="row">
+        {% for helper in helpers %}
+          <div class="col-md-4">
+            <div class="card helper-card">
+              <div class="card-img-container">
+                <img src="{{ url_for('static', filename='images/' ~ helper.photo) }}" alt="{{ helper.username }}">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ helper.username }}</h5>
+                <p class="card-text">評価: 
+                  {% for i in range(5) %}
+                    {% if i < helper.rating|int %}★{% else %}☆{% endif %}
+                  {% endfor %}
+                  ({{ "%.1f"|format(helper.rating) }})
+                </p>
+                <p class="card-text">言語: {{ helper.languages|join(', ') }}</p>
+                <p class="card-text">ヘルプ回数: {{ helper.help_count }}</p>
+                <div class="card-buttons">
+                  <a href="{{ url_for('profile', helper_id=helper.id) }}" class="btn btn-primary btn-sm">詳細を見る</a>
+                  <button type="button" class="btn btn-success btn-sm" onclick="openRatingModal({{ helper.id }})">評価する</button>
+                </div>
+                <div class="card-buttons mt-2">
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="likeHelper({{ helper.id }}, this)">
+                    いいね ❤️ (<span class="like-count">{{ helper.likes_count }}</span>)
+                  </button>
+                  <button type="button" class="btn btn-outline-warning btn-sm" onclick="bookmarkHelper({{ helper.id }}, this)">
+                    ブックマーク ⭐ (<span class="bookmark-count">{{ helper.bookmarks_count }}</span>)
+                  </button>
+                </div>
+                <div class="text-end mt-2">
+                  <a href="{{ url_for('contact', helper_id=helper.id) }}" class="btn btn-info btn-sm">コンタクト</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-warning" role="alert">
+        条件に一致するヘルパーが見つかりませんでした。
+      </div>
+    {% endif %}
+  </main>
+  
+  <!-- 評価モーダル -->
+  <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="ratingForm" method="post">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ratingModalLabel">ヘルパーを評価する</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="helper_id" id="modalHelperId">
+            <div class="mb-3">
+              <label for="modalRating" class="form-label">評価 (1～5):</label>
+              <input type="number" class="form-control" id="modalRating" name="rating" min="1" max="5" required>
+            </div>
+            <div class="mb-3">
+              <label for="modalComment" class="form-label">コメント:</label>
+              <textarea class="form-control" id="modalComment" name="comment" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">評価を送信</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- フッター -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 JapanConnect - All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap JS とスクリプト -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // いいね機能
+    function likeHelper(helperId, btn) {
+      fetch('/like/' + helperId, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          btn.querySelector('.like-count').textContent = data.likes_count;
+        });
+    }
+    // ブックマーク機能
+    function bookmarkHelper(helperId, btn) {
+      fetch('/bookmark/' + helperId, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          btn.querySelector('.bookmark-count').textContent = data.bookmarks_count;
+        });
+    }
+    // 評価モーダルを開く
+    function openRatingModal(helperId) {
+      document.getElementById('modalHelperId').value = helperId;
+      // フォームの action を /rate/<helperId> に設定
+      document.getElementById('ratingForm').action = '/rate/' + helperId;
+      var modal = new bootstrap.Modal(document.getElementById('ratingModal'));
+      modal.show();
+    }
+  </script>
+</body>
+</html>

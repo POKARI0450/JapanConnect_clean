@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ヘルパー検索結果</title>
+  <!-- フォント読み込み：Noto Serif JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Noto Serif JP', serif;
+      /* 和紙風の背景 (仮の画像パス) */
+      background-color: #f9f5ec;
+      background-image: url("washi-texture.png");
+      background-repeat: repeat;
+      background-position: center center;
+      margin: 0;
+    }
+    /* フェードインアニメーションの定義 */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- 「Find Helper」検索ボタン -->
+  <div class="text-center p-4">
+    <button id="findButton" class="bg-red-800 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
+      Find Helper
+    </button>
+  </div>
+
+  <!-- 検索結果コンテナ（初期状態は非表示） -->
+  <div id="resultsContainer" class="hidden px-4 pb-8">
+    <!-- カード一覧（レスポンシブグリッド） -->
+    <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- ヘルパーカード例1 -->
+      <div class="rounded-lg shadow-lg bg-white p-4" data-rating="5.0">
+        <!-- 写真 -->
+        <div class="w-full aspect-square overflow-hidden rounded-md">
+          <img src="helper1.jpg" alt="Helper Photo" class="object-cover w-full h-full">
+        </div>
+        <!-- 名前とバッジ -->
+        <div class="mt-3 flex items-center justify-between">
+          <div class="font-bold text-lg">山田 太郎</div>
+          <!-- 新人バッジ（新人でない場合は表示しない） -->
+          <!-- <span class="bg-red-800 text-white text-xs px-2 py-1 rounded">半額サービス</span> -->
+        </div>
+        <!-- 対応言語 -->
+        <div class="text-sm text-gray-700 mt-1">対応言語: 日本語・英語</div>
+        <!-- 評価（星と数値） -->
+        <div class="mt-1 text-yellow-600 text-sm">★★★★★ <span class="text-gray-800">(5.0)</span></div>
+        <!-- 詳細ページへのリンク -->
+        <a href="helper1-detail.html" class="mt-2 inline-block text-red-800 text-sm underline">詳細を見る</a>
+      </div>
+
+      <!-- ヘルパーカード例2（新人） -->
+      <div class="rounded-lg shadow-lg bg-white p-4" data-rating="4.5" data-newcomer="true">
+        <!-- 写真 -->
+        <div class="w-full aspect-square overflow-hidden rounded-md">
+          <img src="helper_new.jpg" alt="Helper Photo" class="object-cover w-full h-full">
+        </div>
+        <!-- 名前とバッジ -->
+        <div class="mt-3 flex items-center justify-between">
+          <div class="font-bold text-lg">佐藤 花子</div>
+          <!-- 新人バッジ表示 -->
+          <span class="bg-red-800 text-white text-xs px-2 py-1 rounded">半額サービス</span>
+        </div>
+        <!-- 対応言語 -->
+        <div class="text-sm text-gray-700 mt-1">対応言語: 英語・中国語</div>
+        <!-- 評価（星と数値） -->
+        <div class="mt-1 text-yellow-600 text-sm">★★★★☆ <span class="text-gray-800">(4.5)</span></div>
+        <!-- 詳細ページへのリンク -->
+        <a href="helper2-detail.html" class="mt-2 inline-block text-red-800 text-sm underline">詳細を見る</a>
+      </div>
+
+      <!-- ヘルパーカード例3 -->
+      <div class="rounded-lg shadow-lg bg-white p-4" data-rating="4.2">
+        <!-- 写真 -->
+        <div class="w-full aspect-square overflow-hidden rounded-md">
+          <img src="helper3.jpg" alt="Helper Photo" class="object-cover w-full h-full">
+        </div>
+        <!-- 名前とバッジ -->
+        <div class="mt-3 flex items-center justify-between">
+          <div class="font-bold text-lg">ジョン・スミス</div>
+          <!-- バッジなし（新人ではない） -->
+        </div>
+        <!-- 対応言語 -->
+        <div class="text-sm text-gray-700 mt-1">対応言語: 英語</div>
+        <!-- 評価 -->
+        <div class="mt-1 text-yellow-600 text-sm">★★★★☆ <span class="text-gray-800">(4.2)</span></div>
+        <!-- 詳細ページへのリンク -->
+        <a href="helper3-detail.html" class="mt-2 inline-block text-red-800 text-sm underline">詳細を見る</a>
+      </div>
+
+      <!-- （他のヘルパーカードも同様に配置） -->
+    </div>
+  </div>
+
+  <!-- 評価順ソートとフェードイン表示のスクリプト -->
+  <script>
+    const findButton = document.getElementById('findButton');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const cardsGrid = document.getElementById('cardsGrid');
+
+    findButton.addEventListener('click', () => {
+      // 検索結果コンテナを表示してフェードイン効果を適用
+      resultsContainer.classList.remove('hidden');
+      resultsContainer.classList.add('fade-in');
+      // カード要素を取得して配列に変換
+      const cards = Array.from(cardsGrid.children);
+      // カードを評価順（新人優先）でソート
+      cards.sort((a, b) => {
+        const ratingA = parseFloat(a.getAttribute('data-rating')) || 0;
+        const ratingB = parseFloat(b.getAttribute('data-rating')) || 0;
+        const isNewA = a.hasAttribute('data-newcomer');
+        const isNewB = b.hasAttribute('data-newcomer');
+        // 新人比較：Aが新人でBが新人でない場合Aを先に。それ以外は評価比較
+        if (isNewA && !isNewB) return -1;
+        if (!isNewA && isNewB) return 1;
+        // 評価が高い順
+        return ratingB - ratingA;
+      });
+      // ソート後の順序でDOMに再配置
+      cards.forEach(card => cardsGrid.appendChild(card));
+    });
+  </script>
+</body>
+</html>

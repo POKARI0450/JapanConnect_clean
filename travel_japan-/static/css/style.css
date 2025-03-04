@@ -1,0 +1,117 @@
+/* 全体の基本設定 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Serif JP', serif;
+  background-color: #f7f2e9; /* やわらかな和紙色 */
+  background-image: url("../images/washi_texture.jpg"); /* 和紙のテクスチャ画像 */
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #4a3b31; /* 落ち着いたダークブラウン */
+}
+
+/* ヘッダー */
+.sakura-header {
+  background: linear-gradient(135deg, #d2b48c, #a0522d); /* タン系〜シエンナのグラデーション */
+  color: #fff;
+  padding: 2rem 0;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.sakura-header h1 {
+  font-weight: 700;
+  font-size: 3rem;
+  margin: 0;
+}
+.sakura-header p {
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0;
+}
+
+/* メインのフォームセクション */
+.request-form {
+  background-color: rgba(255, 255, 255, 0.9); /* 白に透明度を付けて背景テクスチャを透かす */
+  padding: 2rem;
+  border: 1px solid #dcd2b3;
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* フォーム要素 */
+.request-form label {
+  font-weight: bold;
+  color: #4a3b31;
+}
+.request-form .form-control,
+.request-form .form-select {
+  border: 1px solid #dcd2b3;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+.request-form .form-control:focus,
+.request-form .form-select:focus {
+  box-shadow: 0 0 4px rgba(165, 42, 42, 0.5);
+  border-color: #a0522d;
+}
+
+/* ボタンのスタイル */
+.btn-primary {
+  background-color: #a0522d;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
+}
+.btn-primary:hover {
+  background-color: #8b4513;
+}
+
+/* フッター */
+.site-footer {
+  background-color: #4a3b31;
+  color: #f7f2e9;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .sakura-header h1 {
+    font-size: 2.5rem;
+  }
+  .sakura-header p {
+    font-size: 1.2rem;
+  }
+  .request-form {
+    padding: 1rem;
+    margin: 1rem;
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.helper-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.hero-text {
+  color: black;
+}
+
+.hero-description {
+  color: white;
+}

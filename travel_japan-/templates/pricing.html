@@ -1,0 +1,618 @@
+{% extends "layout.html" %}
+
+{% block title %}料金プラン - JapanConnect{% endblock %}
+
+{% block additional_styles %}
+.pricing-hero {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{{ url_for("static", filename="images/japan_bg.jpg") }}');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.pricing-hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.pricing-hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.pricing-hero-description {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+.pricing-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.pricing-tab {
+    padding: 10px 30px;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pricing-tab:first-child {
+    border-radius: 50px 0 0 50px;
+}
+
+.pricing-tab:last-child {
+    border-radius: 0 50px 50px 0;
+}
+
+.pricing-tab.active {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+.pricing-section {
+    padding: 80px 0;
+    background-color: #FFF8E1;
+}
+
+.pricing-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid #eee;
+    position: relative;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(139, 69, 19, 0.2);
+}
+
+.pricing-card.featured {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.pricing-card.featured:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.pricing-badge {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    border-radius: 0 0 10px 10px;
+    font-weight: 600;
+}
+
+.pricing-header {
+    padding: 30px;
+    text-align: center;
+    background-color: var(--light-color);
+    border-bottom: 1px solid #eee;
+}
+
+.pricing-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.pricing-price {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.currency {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    line-height: 1;
+    margin: 0 5px;
+}
+
+.period {
+    font-size: 1rem;
+    color: #666;
+}
+
+.pricing-features {
+    padding: 30px;
+}
+
+.pricing-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pricing-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-features i {
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+.pricing-features .fa-check {
+    color: #28a745;
+}
+
+.pricing-features .fa-times {
+    color: #dc3545;
+}
+
+.pricing-features .disabled {
+    color: #999;
+}
+
+.pricing-footer {
+    padding: 20px 30px 30px;
+    text-align: center;
+}
+
+.btn-pricing {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.faq-section {
+    padding: 80px 0;
+    background-color: white;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 20px;
+    background-color: var(--light-color);
+    font-weight: 600;
+    color: var(--dark-color);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-question i {
+    transition: transform 0.3s;
+}
+
+.faq-question.active i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.faq-answer.active {
+    padding: 20px;
+    max-height: 500px;
+}
+
+.cta-section {
+    padding: 80px 0;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{{ url_for("static", filename="images/japan_bg.jpg") }}');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.cta-description {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+}
+
+.btn-cta {
+    background-color: white;
+    color: var(--primary-color);
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-cta:hover {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+{% endblock %}
+
+{% block content %}
+<!-- ヒーローセクション -->
+<section class="pricing-hero">
+    <div class="container">
+        <div class="pricing-hero-content">
+            <h1 class="pricing-hero-title">あなたに最適なプランを選ぼう</h1>
+            <p class="pricing-hero-description">JapanConnectでは、あなたのニーズに合わせた柔軟な料金プランをご用意しています。無料プランから始めて、必要に応じてアップグレードすることも可能です。</p>
+            
+            <div class="pricing-tabs">
+                <button class="pricing-tab active" onclick="switchTab('monthly')">月額プラン</button>
+                <button class="pricing-tab" onclick="switchTab('yearly')">年額プラン（20%お得）</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- プライシングセクション -->
+<section class="pricing-section">
+    <div class="container">
+        <!-- 月額プラン -->
+        <div id="monthly-plans" class="pricing-plans active">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">ベーシック</h3>
+                            <div class="pricing-price">
+                                <span class="currency">¥</span>
+                                <span class="amount">0</span>
+                                <span class="period">/月</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                                <li><i class="fas fa-check"></i> メッセージ機能（月5件まで）</li>
+                                <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 優先サポート</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 広告非表示</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 高度なフィルタリング</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 予約管理</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <a href="{{ url_for('traveler_signup') }}" class="btn btn-outline-primary btn-pricing">無料で始める</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">人気</div>
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">スタンダード</h3>
+                            <div class="pricing-price">
+                                <span class="currency">¥</span>
+                                <span class="amount">980</span>
+                                <span class="period">/月</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                                <li><i class="fas fa-check"></i> メッセージ機能（無制限）</li>
+                                <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                                <li><i class="fas fa-check"></i> 優先サポート</li>
+                                <li><i class="fas fa-check"></i> 広告非表示</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 高度なフィルタリング</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 予約管理</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <a href="{{ url_for('traveler_signup') }}" class="btn btn-primary btn-pricing">今すぐ登録</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">プレミアム</h3>
+                            <div class="pricing-price">
+                                <span class="currency">¥</span>
+                                <span class="amount">1,980</span>
+                                <span class="period">/月</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                                <li><i class="fas fa-check"></i> メッセージ機能（無制限）</li>
+                                <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                                <li><i class="fas fa-check"></i> 優先サポート</li>
+                                <li><i class="fas fa-check"></i> 広告非表示</li>
+                                <li><i class="fas fa-check"></i> 高度なフィルタリング</li>
+                                <li><i class="fas fa-check"></i> 予約管理</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <a href="{{ url_for('traveler_signup') }}" class="btn btn-outline-primary btn-pricing">今すぐ登録</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 年額プラン（非表示） -->
+        <div id="yearly-plans" class="pricing-plans" style="display: none;">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">ベーシック</h3>
+                            <div class="pricing-price">
+                                <span class="currency">¥</span>
+                                <span class="amount">0</span>
+                                <span class="period">/年</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                                <li><i class="fas fa-check"></i> メッセージ機能（月5件まで）</li>
+                                <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 優先サポート</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 広告非表示</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 高度なフィルタリング</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 予約管理</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <a href="{{ url_for('traveler_signup') }}" class="btn btn-outline-primary btn-pricing">無料で始める</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">人気</div>
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">スタンダード</h3>
+                            <div class="pricing-price">
+                                <span class="currency">¥</span>
+                                <span class="amount">9,408</span>
+                                <span class="period">/年</span>
+                            </div>
+                            <div class="pricing-save">通常価格より20%お得</div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                                <li><i class="fas fa-check"></i> メッセージ機能（無制限）</li>
+                                <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                                <li><i class="fas fa-check"></i> 優先サポート</li>
+                                <li><i class="fas fa-check"></i> 広告非表示</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 高度なフィルタリング</li>
+                                <li class="disabled"><i class="fas fa-times"></i> 予約管理</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <a href="{{ url_for('traveler_signup') }}" class="btn btn-primary btn-pricing">今すぐ登録</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">プレミアム</h3>
+                            <div class="pricing-price">
+                                <span class="currency">¥</span>
+                                <span class="amount">19,008</span>
+                                <span class="period">/年</span>
+                            </div>
+                            <div class="pricing-save">通常価格より20%お得</div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                                <li><i class="fas fa-check"></i> メッセージ機能（無制限）</li>
+                                <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                                <li><i class="fas fa-check"></i> 優先サポート</li>
+                                <li><i class="fas fa-check"></i> 広告非表示</li>
+                                <li><i class="fas fa-check"></i> 高度なフィルタリング</li>
+                                <li><i class="fas fa-check"></i> 予約管理</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <a href="{{ url_for('traveler_signup') }}" class="btn btn-outline-primary btn-pricing">今すぐ登録</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- よくある質問 -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">よくある質問</h2>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>無料プランでも十分に利用できますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>はい、無料プランでも基本的な機能はすべてご利用いただけます。ヘルパーの検索や、月に5件までのメッセージのやり取りが可能です。より頻繁にサービスを利用される場合や、より高度な機能が必要な場合は、有料プランへのアップグレードをご検討ください。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>プランはいつでも変更できますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>はい、プランはいつでも変更可能です。アップグレードの場合は即時反映され、ダウングレードの場合は現在の請求期間の終了時に反映されます。マイページの「プラン設定」から簡単に変更できます。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>支払い方法は何がありますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>クレジットカード（Visa、Mastercard、American Express、JCB）、PayPal、Apple Pay、Google Payに対応しています。一部のプランでは銀行振込も可能です。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>解約はいつでもできますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>はい、いつでも解約可能です。解約後も現在の請求期間の終了まではサービスをご利用いただけます。自動更新は停止されますので、追加の請求は発生しません。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>ガイドとして登録する場合も料金がかかりますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ガイドとして登録する場合は基本的に無料です。ただし、より多くの旅行者にプロフィールを表示するためのプロモーション機能など、一部のオプション機能は有料となります。詳細はガイド向けページをご確認ください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA セクション -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title">今すぐ JapanConnect を始めよう</h2>
+            <p class="cta-description">無料プランから始めて、日本での旅行をより豊かなものに。必要に応じていつでもアップグレードできます。</p>
+            <a href="{{ url_for('traveler_signup') }}" class="btn btn-cta">無料で登録する</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function switchTab(tabName) {
+        // タブの切り替え
+        const tabs = document.querySelectorAll('.pricing-tab');
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        const clickedTab = event.target;
+        clickedTab.classList.add('active');
+        
+        // プランの表示切り替え
+        const monthlyPlans = document.getElementById('monthly-plans');
+        const yearlyPlans = document.getElementById('yearly-plans');
+        
+        if (tabName === 'monthly') {
+            monthlyPlans.style.display = 'block';
+            yearlyPlans.style.display = 'none';
+        } else {
+            monthlyPlans.style.display = 'none';
+            yearlyPlans.style.display = 'block';
+        }
+    }
+    
+    function toggleFaq(element) {
+        // アクティブクラスの切り替え
+        element.classList.toggle('active');
+        
+        // 回答の表示/非表示
+        const answer = element.nextElementSibling;
+        answer.classList.toggle('active');
+    }
+</script>
+{% endblock %}

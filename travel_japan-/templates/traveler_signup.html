@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}旅行者登録 - JapanConnect{% endblock %}
+
+{% block additional_styles %}
+.signup-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.signup-description {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-control {
+    height: 50px;
+    padding-left: 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(160, 82, 45, 0.25);
+}
+
+.form-icon {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: var(--primary-color);
+}
+
+.btn-signup {
+    background-color: var(--primary-color);
+    border: none;
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn-signup:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(160, 82, 45, 0.3);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.login-link a:hover {
+    color: var(--dark-color);
+    text-decoration: underline;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1 class="signup-title">旅行者として登録</h1>
+            <p class="signup-description">アカウントを作成して、日本での旅行をより豊かに</p>
+        </div>
+        
+        <form action="{{ url_for('traveler_signup') }}" method="POST">
+            <div class="form-group">
+                <i class="fas fa-user form-icon"></i>
+                <input type="text" id="username" name="username" class="form-control" placeholder="ユーザー名" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-envelope form-icon"></i>
+                <input type="email" id="email" name="email" class="form-control" placeholder="メールアドレス" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-lock form-icon"></i>
+                <input type="password" id="password" name="password" class="form-control" placeholder="パスワード" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-globe form-icon"></i>
+                <select class="form-control" id="language" name="language" required>
+                    <option value="" disabled selected>母国語を選択</option>
+                    <option value="English">English（英語）</option>
+                    <option value="Chinese">Chinese（中国語）</option>
+                    <option value="Korean">Korean（韓国語）</option>
+                    <option value="Spanish">Spanish（スペイン語）</option>
+                    <option value="French">French（フランス語）</option>
+                    <option value="Other">Other（その他）</option>
+                </select>
+            </div>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-signup">登録する</button>
+            </div>
+        </form>
+        
+        <p class="login-link">既にアカウントをお持ちですか？ <a href="{{ url_for('login') }}">ログインはこちら</a></p>
+    </div>
+</div>
+{% endblock %}
