@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}ヘルパー登録 - JapanConnect{% endblock %}
+{% block content %}
+<h2 class="mb-4">ヘルパー登録</h2>
+<form method="post" action="{{ url_for('register') }}">
+  <div class="mb-3">
+    <label for="username" class="form-label">ユーザー名</label>
+    <input type="text" class="form-control" id="username" name="username" required>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">メールアドレス</label>
+    <input type="email" class="form-control" id="email" name="email" required>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">パスワード</label>
+    <input type="password" class="form-control" id="password" name="password" required>
+  </div>
+  <div class="mb-3">
+    <label for="introduction" class="form-label">自己紹介</label>
+    <textarea class="form-control" id="introduction" name="introduction"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="languages" class="form-label">対応可能言語 (カンマ区切り)</label>
+    <input type="text" class="form-control" id="languages" name="languages">
+  </div>
+  <div class="mb-3">
+    <label for="area" class="form-label">提供地域</label>
+    <input type="text" class="form-control" id="area" name="area">
+  </div>
+  <div class="mb-3">
+    <label for="experience" class="form-label">経験</label>
+    <input type="text" class="form-control" id="experience" name="experience">
+  </div>
+  <div class="mb-3">
+    <label for="photo" class="form-label">画像URL</label>
+    <input type="text" class="form-control" id="photo" name="photo">
+  </div>
+  <button type="submit" class="btn btn-primary">登録する</button>
+</form>
+{% endblock %}

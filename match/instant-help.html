@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今すぐヘルプ | JapanConnect</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/map.css">
+</head>
+<body>
+    <!-- ヘッダーナビゲーション（省略） -->
+    
+    <main class="match-container">
+        <div class="match-sidebar">
+            <div class="search-filters">
+                <h2>検索条件</h2>
+                <form id="filter-form">
+                    <div class="form-group">
+                        <label for="help-type">ヘルプタイプ</label>
+                        <select id="help-type" name="help-type">
+                            <option value="navigation" selected>道案内・交通</option>
+                            <option value="food">飲食店・メニュー</option>
+                            <option value="translation">翻訳・通訳</option>
+                            <option value="shopping">買い物サポート</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">場所</label>
+                        <input type="text" id="location" name="location" value="東京駅" readonly>
+                        <button type="button" class="btn-location" title="現在地を更新"><i class="icon-location"></i></button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="radius">検索範囲</label>
+                        <select id="radius" name="radius">
+                            <option value="500">500m以内</option>
+                            <option value="1000" selected>1km以内</option>
+                            <option value="2000">2km以内</option>
+                            <option value="5000">5km以内</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="language">対応言語</label>
+                        <select id="language" name="language" multiple>
+                            <option value="en" selected>英語</option>
+                            <option value="zh">中国語</option>
+                            <option value="ko">韓国語</option>
+                            <option value="es">スペイン語</option>
+                            <option value="fr">フランス語</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rating">最低評価</label>
+                        <div class="rating-filter">
+                            <input type="range" id="rating" name="rating" min="0" max="5" step="0.5" value="4">
+                            <span class="rating-value">4.0</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">条件を適用</button>
+                </form>
+            </div>
+            
+            <div class="helper-list">
+                <h2>利用可能なヘルパー</h2>
+                <div class="helper-cards">
+                    <div class="helper-card">
+                        <div class="helper-avatar">
+                            <img src="/static/images/avatars/tanaka.jpg" alt="田中 優子">
+                            <span class="online-status online"></span>
+                        </div>
+                        <div class="helper-info">
+                            <h3>田中 優子</h3>
+                            <div class="helper-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="count">(32)</span>
+                            </div>
+                            <div class="helper-languages">
+                                <span class="language-tag">日本語</span>
+                                <span class="language-tag">英語</span>
+                            </div>
+                            <p class="helper-bio">東京観光案内の経験豊富。特に電車の乗り方や食事の注文をサポートします。</p>
+                            <div class="helper-distance">
+                                <i class="icon-location"></i> 350m先・徒歩5分
+                            </div>
+                            <div class="helper-actions">
+                                <button class="btn btn-primary">今すぐ依頼</button>
+                                <button class="btn btn-outline btn-chat"><i class="icon-chat"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 他のヘルパーカード（複数表示） -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="match-map" id="map">
+            <!-- 地図が表示される場所 -->
+        </div>
+    </main>
+    
+    <!-- フッター（省略） -->
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <script src="/static/js/map.js"></script>
+    <script src="/static/js/instant-help.js"></script>
+</body>
+</html>

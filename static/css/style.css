@@ -93,3 +93,25 @@ body {
     margin: 1rem;
   }
 }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.helper-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.hero-text {
+  color: black;
+}
+
+.hero-description {
+  color: white;
+}

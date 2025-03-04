@@ -1,66 +1,889 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JapanConnect - ヘルパー検索</title>
-  <!-- Google Fonts: Noto Serif JP -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Bootstrap CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- キャッシュバスティング付きカスタムCSS -->
-  <link rel="stylesheet" href="{{ static_css() }}">
-</head>
-<body>
-  <header class="sakura-header">
-    <div class="container text-center">
-      <h1>JapanConnect 🌸</h1>
-      <p>Connecting International Visitors with Local Helpers</p>
+{% extends "layout.html" %}
+
+{% block title %}JapanConnect - ホーム{% endblock %}
+
+{% block additional_styles %}
+.hero-section {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 80px 0;
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{{ url_for("static", filename="images/japan_bg.jpg") }}');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: none;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.feature-description {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.registration-section {
+    background-color: var(--light-color);
+    padding: 80px 0;
+    margin: 50px 0;
+}
+
+.registration-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: none;
+    padding: 40px 30px;
+}
+
+.registration-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.registration-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.registration-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.registration-description {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.btn-registration {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-traveler {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.btn-traveler:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(139, 69, 19, 0.3);
+}
+
+.btn-guide {
+    background-color: white;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-guide:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(139, 69, 19, 0.3);
+}
+
+.helper-section {
+    padding: 80px 0;
+    background-color: #FFF8E1;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 50px;
+    text-align: center;
+    color: var(--dark-color);
+}
+
+.helper-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid #eee;
+}
+
+.helper-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(139, 69, 19, 0.2);
+}
+
+.helper-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.helper-card .card-body {
+    padding: 20px;
+}
+
+.helper-card .card-title {
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.helper-card .card-text {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.helper-card .rating {
+    color: #FFD700;
+    margin-right: 5px;
+}
+
+.helper-card .card-footer {
+    background-color: white;
+    border-top: 1px solid #eee;
+    padding: 15px 20px;
+}
+
+.helper-card .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.helper-card .btn-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.testimonial-section {
+    background-color: var(--light-color);
+    padding: 80px 0;
+}
+
+.testimonial-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.testimonial-card::before {
+    content: """;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 5rem;
+    color: rgba(139, 69, 19, 0.1);
+    font-family: serif;
+    line-height: 1;
+}
+
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.testimonial-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.testimonial-name {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: var(--dark-color);
+}
+
+.testimonial-role {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.cta-section {
+    padding: 100px 0;
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+}
+
+.cta-description {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    color: #666;
+}
+
+.btn-cta {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-cta:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(139, 69, 19, 0.3);
+}
+
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 50px 0 20px;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.footer-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+}
+
+.footer-heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.footer-links a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.social-links {
+    display: flex;
+    margin-top: 20px;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: white;
+    transition: all 0.3s;
+}
+
+.social-link:hover {
+    background-color: white;
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.popular-helpers-section {
+    padding: 80px 0;
+}
+
+.pricing-section {
+    padding: 80px 0;
+    background-color: #FFF8E1;
+}
+
+.pricing-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid #eee;
+    position: relative;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(139, 69, 19, 0.2);
+}
+
+.pricing-card.featured {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.pricing-card.featured:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.pricing-badge {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    border-radius: 0 0 10px 10px;
+    font-weight: 600;
+}
+
+.pricing-header {
+    padding: 30px;
+    text-align: center;
+    background-color: var(--light-color);
+    border-bottom: 1px solid #eee;
+}
+
+.pricing-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.pricing-price {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.currency {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    line-height: 1;
+    margin: 0 5px;
+}
+
+.period {
+    font-size: 1rem;
+    color: #666;
+}
+
+.pricing-features {
+    padding: 30px;
+}
+
+.pricing-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pricing-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-features i {
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+.pricing-features .fa-check {
+    color: #28a745;
+}
+
+.pricing-features .fa-times {
+    color: #dc3545;
+}
+
+.pricing-features .disabled {
+    color: #999;
+}
+
+.pricing-footer {
+    padding: 20px 30px 30px;
+    text-align: center;
+}
+
+.btn-pricing {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btn-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-link:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.btn-link i {
+    transition: transform 0.3s;
+}
+
+.btn-link:hover i {
+    transform: translateX(5px);
+}
+{% endblock %}
+
+{% block content %}
+<!-- ヒーローセクション -->
+<section class="hero-section">
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="hero-title">日本での体験を、もっと豊かに</h1>
+                <p class="hero-description">地元の人と繋がり、言語の壁を超えて、本当の日本を体験しよう</p>
+                <a href="{{ url_for('search_results') }}" class="btn btn-light btn-lg px-4 py-2">ヘルパーを探す</a>
+            </div>
+        </div>
     </div>
-  </header>
+</section>
 
-  <main class="container my-5">
-    <section class="request-form">
-      <h2 class="mb-4 text-center">Get Assistance Now</h2>
-      <form action="{{ url_for('create_request') }}" method="POST">
-        <div class="mb-3">
-          <label for="category" class="form-label">I need help with:</label>
-          <!-- 選択肢を含める -->
-          <select name="category" id="category" class="form-select" required>
-            <option value="ticket">Ticket（切符の購入や乗り換え）</option>
-            <option value="food">Finding Food（美味しい食事・レストラン）</option>
-            <option value="culture">Experience Culture（日本文化体験）</option>
-            <option value="translation">Translation Help（翻訳サポート）</option>
-            <option value="other">Other（その他）</option>
-          </select>
+<!-- 特徴セクション -->
+<section class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="feature-card p-4 text-center">
+                <i class="fas fa-language feature-icon"></i>
+                <h3 class="feature-title">言語の壁を超える</h3>
+                <p class="feature-description">日本語が話せなくても大丈夫。現地の日本人があなたをサポートします。</p>
+            </div>
         </div>
-        <div class="mb-3">
-          <label for="location" class="form-label">Current Location:</label>
-          <input type="text" name="location" id="location" class="form-control" placeholder="例: 東京都" required>
+        <div class="col-md-4 mb-4">
+            <div class="feature-card p-4 text-center">
+                <i class="fas fa-map-marked-alt feature-icon"></i>
+                <h3 class="feature-title">地元の視点で旅する</h3>
+                <p class="feature-description">観光ガイドブックには載っていない、地元の人だけが知る場所や体験を発見しましょう。</p>
+            </div>
         </div>
-        <div class="mb-3">
-          <label for="language" class="form-label">Preferred Language:</label>
-          <select name="language" id="language" class="form-select" required>
-            <option value="english">English</option>
-            <option value="chinese">Chinese</option>
-            <option value="korean">Korean</option>
-            <option value="spanish">Spanish</option>
-          </select>
+        <div class="col-md-4 mb-4">
+            <div class="feature-card p-4 text-center">
+                <i class="fas fa-hands-helping feature-icon"></i>
+                <h3 class="feature-title">安心のサポート</h3>
+                <p class="feature-description">困ったときはいつでもヘルプを依頼できます。チケットの購入から道案内まで。</p>
+            </div>
         </div>
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary">Find Helper Now</button>
-        </div>
-      </form>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container text-center">
-      <p>&copy; 2025 JapanConnect - All rights reserved.</p>
     </div>
-  </footer>
+</section>
 
-  <!-- Bootstrap JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<!-- 登録セクション -->
+<section class="registration-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="registration-card text-center">
+                    <i class="fas fa-plane-arrival registration-icon"></i>
+                    <h3 class="registration-title">旅行者の方</h3>
+                    <p class="registration-description">日本での旅行をサポートします。言語の壁を超えて、より深い日本の体験を。</p>
+                    <a href="{{ url_for('traveler_signup') }}" class="btn btn-registration btn-traveler">旅行者として登録</a>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="registration-card text-center">
+                    <i class="fas fa-user-tie registration-icon"></i>
+                    <h3 class="registration-title">ガイドの方</h3>
+                    <p class="registration-description">あなたの知識と経験を活かして、旅行者をサポートしましょう。新しい出会いと収入を得られます。</p>
+                    <a href="{{ url_for('guide_signup') }}" class="btn btn-registration btn-guide">ガイドとして登録</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 人気ヘルパーセクション -->
+{% if helpers %}
+<section class="helper-section">
+    <div class="container">
+        <h2 class="section-title">人気のヘルパー</h2>
+        <div class="row">
+            {% for helper in helpers %}
+            <div class="col-md-4 mb-4">
+                <div class="helper-card">
+                    {% if helper.profile and helper.profile.photo %}
+                    <img src="{{ url_for('static', filename='images/' + helper.profile.photo) }}" class="card-img-top" alt="{{ helper.username }}" onerror="this.src='{{ url_for('static', filename='images/default_profile.jpg') }}'">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_profile.jpg') }}" class="card-img-top" alt="デフォルト画像">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ helper.username }}</h5>
+                        {% if helper.profile %}
+                        <p class="card-text">{{ helper.profile.intro }}</p>
+                        <p class="card-text"><small class="text-muted">言語: {{ helper.profile.languages }}</small></p>
+                        <p class="card-text"><small class="text-muted">地域: {{ helper.profile.region }}</small></p>
+                        {% endif %}
+                        <p class="card-text">
+                            <span class="rating">
+                                {% for i in range(5) %}
+                                    {% if i < helper.rating|int %}
+                                    <i class="fas fa-star"></i>
+                                    {% else %}
+                                    <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                            {{ helper.rating }}/5 ({{ helper.rating_count }}件)
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('search_results') }}" class="btn btn-primary w-100">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- 体験談セクション -->
+<section class="testimonial-section">
+    <div class="container">
+        <h2 class="section-title">利用者の声</h2>
+        <div class="testimonial-slider">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">言葉の壁があって不安でしたが、JapanConnectのおかげで素晴らしい旅行になりました。地元の人と交流できたことが一番の思い出です。</p>
+                            <div class="testimonial-author">
+                                <img src="{{ url_for('static', filename='images/testimonial1.jpg') }}" alt="Sarah" class="testimonial-avatar" onerror="this.src='{{ url_for('static', filename='images/default_profile.jpg') }}'">
+                                <div class="testimonial-info">
+                                    <p class="testimonial-name">Sarah Johnson</p>
+                                    <p class="testimonial-role">アメリカから訪日</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">ガイドとして活動することで、新しい友達ができ、英語の練習にもなっています。何より、自分の街の魅力を再発見できたことが嬉しいです。</p>
+                            <div class="testimonial-author">
+                                <img src="{{ url_for('static', filename='images/testimonial2.jpg') }}" alt="田中" class="testimonial-avatar" onerror="this.src='{{ url_for('static', filename='images/default_profile.jpg') }}'">
+                                <div class="testimonial-info">
+                                    <p class="testimonial-name">田中 健太</p>
+                                    <p class="testimonial-role">東京在住ガイド</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">切符の買い方がわからず困っていたところ、すぐにヘルパーが見つかりました。その後も観光案内をしてもらい、予定以上に充実した旅になりました。</p>
+                            <div class="testimonial-author">
+                                <img src="{{ url_for('static', filename='images/testimonial3.jpg') }}" alt="Carlos" class="testimonial-avatar" onerror="this.src='{{ url_for('static', filename='images/default_profile.jpg') }}'">
+                                <div class="testimonial-info">
+                                    <p class="testimonial-name">Carlos Rodriguez</p>
+                                    <p class="testimonial-role">スペインから訪日</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-controls">
+                <button class="testimonial-control prev" onclick="moveTestimonial(-1)"><i class="fas fa-chevron-left"></i></button>
+                <div class="testimonial-dots">
+                    <span class="testimonial-dot active" onclick="currentTestimonial(1)"></span>
+                    <span class="testimonial-dot" onclick="currentTestimonial(2)"></span>
+                    <span class="testimonial-dot" onclick="currentTestimonial(3)"></span>
+                </div>
+                <button class="testimonial-control next" onclick="moveTestimonial(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA セクション -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">あなたも JapanConnect を始めませんか？</h2>
+        <p class="cta-description">言語の壁を超えて、より深い日本の体験を。または、あなたの知識を活かして旅行者をサポートしましょう。</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('traveler_signup') }}" class="btn btn-cta">今すぐ始める</a>
+            <a href="{{ url_for('search_results') }}" class="btn btn-outline-primary btn-lg">ヘルパーを探す</a>
+        </div>
+    </div>
+</section>
+
+<!-- フッター -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h3 class="footer-logo">JapanConnect</h3>
+                <p class="footer-description">日本人と外国人をつなぎ、言語の壁を超えた体験を提供するプラットフォームです。</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h4 class="footer-heading">サービス</h4>
+                <ul class="footer-links">
+                    <li><a href="#">ヘルパーを探す</a></li>
+                    <li><a href="#">ガイドになる</a></li>
+                    <li><a href="#">料金プラン</a></li>
+                    <li><a href="#">よくある質問</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h4 class="footer-heading">会社情報</h4>
+                <ul class="footer-links">
+                    <li><a href="#">私たちについて</a></li>
+                    <li><a href="#">ブログ</a></li>
+                    <li><a href="#">採用情報</a></li>
+                    <li><a href="#">お問い合わせ</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4 mb-4">
+                <h4 class="footer-heading">お問い合わせ</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt me-2"></i> 東京都渋谷区〇〇 1-2-3</li>
+                    <li><i class="fas fa-phone me-2"></i> 03-1234-5678</li>
+                    <li><i class="fas fa-envelope me-2"></i> info@japanconnect.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 JapanConnect. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- プライシングセクション -->
+<section class="pricing-section">
+    <div class="container">
+        <h2 class="section-title">料金プラン</h2>
+        <p class="section-description text-center mb-5">あなたのニーズに合わせた柔軟なプランをご用意しています</p>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">ベーシック</h3>
+                        <div class="pricing-price">
+                            <span class="currency">¥</span>
+                            <span class="amount">0</span>
+                            <span class="period">/月</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                            <li><i class="fas fa-check"></i> メッセージ機能（月5件まで）</li>
+                            <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                            <li class="disabled"><i class="fas fa-times"></i> 優先サポート</li>
+                            <li class="disabled"><i class="fas fa-times"></i> 広告非表示</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="{{ url_for('traveler_signup') }}" class="btn btn-outline-primary btn-pricing">無料で始める</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">人気</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">スタンダード</h3>
+                        <div class="pricing-price">
+                            <span class="currency">¥</span>
+                            <span class="amount">980</span>
+                            <span class="period">/月</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                            <li><i class="fas fa-check"></i> メッセージ機能（無制限）</li>
+                            <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                            <li><i class="fas fa-check"></i> 優先サポート</li>
+                            <li><i class="fas fa-check"></i> 広告非表示</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="{{ url_for('traveler_signup') }}" class="btn btn-primary btn-pricing">今すぐ登録</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">プレミアム</h3>
+                        <div class="pricing-price">
+                            <span class="currency">¥</span>
+                            <span class="amount">1,980</span>
+                            <span class="period">/月</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> ヘルパー検索</li>
+                            <li><i class="fas fa-check"></i> メッセージ機能（無制限）</li>
+                            <li><i class="fas fa-check"></i> コミュニティアクセス</li>
+                            <li><i class="fas fa-check"></i> 優先サポート</li>
+                            <li><i class="fas fa-check"></i> 広告非表示</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="{{ url_for('traveler_signup') }}" class="btn btn-outline-primary btn-pricing">今すぐ登録</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('pricing') }}" class="btn btn-link">すべてのプランを見る <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- タイトルは、helper が定義されていればプロフィール用のタイトル、
+       定義されていなければ「JapanConnect」と表示する -->
+  <title>
+    {% if helper is defined and helper and helper.username %}
+      {{ helper.username }}のプロフィール
+    {% else %}
+      JapanConnect
+    {% endif %}
+  </title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- カスタムCSS（キャッシュバスティング付き） -->
+  <link rel="stylesheet" href="{{ static_css() }}">
+  <style>
+    /* 共通スタイル */
+    .profile-img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .action-btn {
+      margin-right: 10px;
+    }
+    /* ヘッダー用デフォルトスタイル */
+    .default-header {
+      text-align: center;
+      margin: 50px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 共通ナビゲーション -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">JapanConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">ホーム</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('search') }}">検索</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('pricing') }}">料金プラン</a></li>
+          {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', helper_id=current_user.id) }}">マイプロフィール</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">ログアウト</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">ログイン</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('traveler_signup') }}">登録</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- メインコンテンツ領域 -->
+  <div class="container my-5">
+    {% if helper is defined and helper %}
+      <!-- プロフィールページ用ヘッダー -->
+      <div class="card mb-4">
+        <img src="{{ url_for('static', filename='images/' ~ helper.profile.photo) }}" class="card-img-top profile-img" alt="{{ helper.username }}">
+        <div class="card-body">
+          <h3 class="card-title">{{ helper.username }}</h3>
+          <p class="card-text">{{ helper.profile.intro }}</p>
+          <p>
+            <strong>評価:</strong> {{ "%.1f"|format(helper.rating) }}
+            (★{% for i in range(helper.rating|int) %}★{% endfor %}
+             {% for i in range(5 - helper.rating|int) %}☆{% endfor %})
+          </p>
+          <p><strong>対応言語:</strong> {{ helper.profile.languages }}</p>
+          <p><strong>試験スコア:</strong>
+            {% if helper.profile.scores %}
+              {% for test, score in helper.profile.scores.items() %}
+                {{ test }}: {{ score }}{% if not loop.last %} | {% endif %}
+              {% endfor %}
+            {% else %}
+              未設定
+            {% endif %}
+          </p>
+          <p><strong>提供地域:</strong> {{ helper.profile.region }}</p>
+          <p><strong>経験:</strong> {{ helper.profile.experience }}</p>
+          <p><strong>ヘルプ回数:</strong> {{ helper.help_count }}</p>
+        </div>
+      </div>
+    {% else %}
+      <!-- プロフィール情報がない場合はデフォルトのヘッダーを表示 -->
+      <header class="default-header">
+        <h1>ようこそ JapanConnect へ</h1>
+        <p>日本人と外国人が集い、素晴らしい体験を共有できるプラットフォーム</p>
+      </header>
+    {% endif %}
+
+    <!-- 各ページの固有コンテンツはこのブロックに挿入 -->
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <!-- フッター -->
+  <footer class="bg-dark text-white text-center py-3">
+    &copy; {{ datetime.utcnow().year }} JapanConnect. All rights reserved.
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ガイドダッシュボード - JapanConnect</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* ダッシュボード用のシンプルなスタイル */
+    .dashboard-header {
+      margin-top: 20px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ナビゲーションバー -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">JapanConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('guide_dashboard') }}">ダッシュボード</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', helper_id=current_user.id) }}">プロフィール</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">ログアウト</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- ダッシュボードヘッダー -->
+  <header class="dashboard-header container">
+    <h1>ガイドダッシュボード</h1>
+    <p>ようこそ、{{ guide.username }} さん。ここからガイドとしての各種情報を確認・管理できます。</p>
+  </header>
+  
+  <!-- ダッシュボードコンテンツ -->
+  <main class="container">
+    <div class="row">
+      <!-- プロフィールカード -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">プロフィール</div>
+          <div class="card-body">
+            <p><strong>ユーザー名:</strong> {{ guide.username }}</p>
+            <p><strong>メールアドレス:</strong> {{ guide.email }}</p>
+            <p><strong>自己紹介:</strong> {{ guide.profile.intro if guide.profile and guide.profile.intro else "未設定" }}</p>
+            <p><strong>対応言語:</strong> {{ guide.profile.languages if guide.profile and guide.profile.languages else "未設定" }}</p>
+            <p><strong>提供地域:</strong> {{ guide.profile.region if guide.profile and guide.profile.region else "未設定" }}</p>
+            <p><strong>経験:</strong> {{ guide.profile.experience if guide.profile and guide.profile.experience else "未設定" }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- 今後のツアー（仮） -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">今後のツアー</div>
+          <div class="card-body">
+            <p>現在、予定されているツアー情報はありません。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 予約状況（仮） -->
+    <div class="card">
+      <div class="card-header">予約状況</div>
+      <div class="card-body">
+        <p>現在、予約情報はありません。</p>
+      </div>
+    </div>
+    
+    <!-- メッセージ（仮） -->
+    <div class="card">
+      <div class="card-header">メッセージ</div>
+      <div class="card-body">
+        <p>ガイドへの問い合わせはここで確認できます。（実装は別途）</p>
+      </div>
+    </div>
+  </main>
+  
+  <!-- フッター -->
+  <footer class="bg-light text-center py-3">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 JapanConnect - All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
