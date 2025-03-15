@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 from werkzeug.utils import secure_filename
-import uuid
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # セッション用の秘密鍵
@@ -21,6 +21,7 @@ app.config.update(
 
 # データベースの初期化
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Flask-Loginの設定
 login_manager = LoginManager(app)
@@ -37,6 +38,7 @@ class User(db.Model, UserMixin):
     rating_sum = db.Column(db.Integer, default=0)
     rating_count = db.Column(db.Integer, default=0)
     likes = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     @property
     def rating(self):
@@ -373,6 +375,13 @@ def contact_page():
 @app.route('/service-details')
 def service_details():
     return render_template('service_details.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        # フォームデータの処理
+        return redirect(url_for('index'))
+    return render_template('register.html')
 
 def create_demo_data():
     try:
