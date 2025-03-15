@@ -345,6 +345,35 @@ def profile(helper_id):
         return redirect(url_for('profile', helper_id=helper_id))
     return render_template('profile.html', helper=helper)
 
+# お問い合わせフォーム処理用のルートを追加
+@app.route('/submit_contact', methods=['POST'])
+def submit_contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+        
+        # ここで実際にはメール送信などの処理を行いますが、
+        # このサンプルではデータを受け取るだけにします
+        
+        # フラッシュメッセージを設定
+        flash('お問い合わせありがとうございます。担当者からご連絡いたします。', 'success')
+        
+        # お問い合わせ完了ページにリダイレクト
+        return render_template('contact_complete.html', name=name, email=email)
+    
+    # POSTメソッド以外の場合はトップページにリダイレクト
+    return redirect(url_for('index'))
+
+# お問い合わせページ表示用のルート
+@app.route('/contact_page')
+def contact_page():
+    return render_template('contact.html')
+
+@app.route('/service-details')
+def service_details():
+    return render_template('service_details.html')
+
 def create_demo_data():
     try:
         # 既存のテーブルを削除して再作成
@@ -453,16 +482,6 @@ def create_demo_data():
         print(f"デモデータ作成中にエラーが発生しました: {e}")
         db.session.rollback()
 
-if __name__ == "__main__":
-    db.create_all()
-    # デモデータを追加（テーブルにデータが存在しない場合）
-    if User.query.count() == 0:
-        demo_user1 = User(username="山田太郎", email="taro@example.com", password_hash=generate_password_hash("password"), is_helper=True)
-        demo_profile1 = Profile(user=demo_user1, photo="helper1.jpg", intro="東京都在住。長年の経験をもとにサポートします。", languages="日本語,英語", region="東京,神奈川", experience="5年（100件実績）", help_categories="transportation,food")
-        demo_user2 = User(username="佐藤花子", email="hanako@example.com", password_hash=generate_password_hash("password"), is_helper=True)
-        demo_profile2 = Profile(user=demo_user2, photo="helper2.jpg", intro="新人ですが情熱を持ってお手伝いします！", languages="英語,中国語", region="横浜,川崎", experience="1年（少数実績）", help_categories="culture,translation")
-        demo_user3 = User(username="ジョンスミス", email="john@example.com", password_hash=generate_password_hash("password"), is_helper=False)
-        demo_profile3 = Profile(user=demo_user3, photo="helper3.jpg", intro="海外出身ですが、日本での生活に慣れています。", languages="英語", region="東京全域", experience="4年（多数実績）", help_categories="all")
-        db.session.add_all([demo_user1, demo_profile1, demo_user2, demo_profile2, demo_user3, demo_profile3])
-        db.session.commit()
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+if __name__ == '__main__':
+    import os
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5002)))

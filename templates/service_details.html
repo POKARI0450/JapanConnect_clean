@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス詳細 - JapanConnect</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8D6E63;
+            --accent-color: #6D4C41;
+            --light-color: #FFF8E1;
+            --dark-color: #5D4037;
+            --gray-color: #757575;
+        }
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.6;
+            padding-top: 76px;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            background-color: rgba(141, 110, 99, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-light {
+            border: 2px solid white;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: 600;
+        }
+        
+        .btn-light {
+            background-color: white;
+            color: var(--primary-color) !important;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/static/images/japan_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .page-description {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .service-section {
+            padding: 80px 0;
+        }
+        
+        .service-section:nth-child(even) {
+            background-color: var(--light-color);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: var(--dark-color);
+            text-align: center;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .service-description {
+            color: #666;
+        }
+        
+        .feature-img {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-img img {
+            width: 100%;
+            height: auto;
+            transition: all 0.5s ease;
+        }
+        
+        .feature-img:hover img {
+            transform: scale(1.05);
+        }
+        
+        .feature-content {
+            padding: 30px 0;
+        }
+        
+        .feature-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .feature-description {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list i {
+            color: var(--primary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .cta-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/static/images/japan_pattern.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .cta-description {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn-cta {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background-color: #f8f9fa;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="{{ url_for('index') }}">JapanConnect</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">ホーム</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('search_results') }}">ヘルパーを探す</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ url_for('service_details') }}">サービスについて</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('pricing') }}">料金プラン</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('contact_page') }}">お問い合わせ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-outline-light ml-2" href="#">ログイン</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-light ml-2" href="#">新規登録</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ページヘッダー -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content text-center">
+                <h1 class="page-title">JapanConnectのサービス</h1>
+                <p class="page-description">言語の壁を超えて、より深い日本の体験を。JapanConnectがあなたの日本滞在をサポートします。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- サービス概要セクション -->
+    <section class="service-section">
+        <div class="container">
+            <h2 class="section-title">JapanConnectの特徴</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="service-card p-4 text-center">
+                        <i class="fas fa-language service-icon"></i>
+                        <h3 class="service-title">言語の壁を超える</h3>
+                        <p class="service-description">日本語が話せなくても大丈夫。現地の日本人があなたをサポートします。レストランでの注文、道案内、交通機関の利用など、あらゆる場面で言語サポートを受けられます。</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="service-card p-4 text-center">
+                        <i class="fas fa-map-marked-alt service-icon"></i>
+                        <h3 class="service-title">地元の視点で旅する</h3>
+                        <p class="service-description">観光ガイドブックには載っていない、地元の人だけが知る場所や体験を発見しましょう。地元の人ならではの視点で、本当の日本の魅力を体験できます。</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="service-card p-4 text-center">
+                        <i class="fas fa-hands-helping service-icon"></i>
+                        <h3 class="service-title">安心のサポート</h3>
+                        <p class="service-description">困ったときはいつでもヘルプを依頼できます。チケットの購入から道案内まで、あなたの旅をスムーズにするためのサポートを提供します。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特徴詳細セクション1 -->
+    <section class="service-section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="feature-img">
+                        <img src="{{ url_for('static', filename='images/feature1.jpg') }}" alt="言語サポート" onerror="this.src='https://via.placeholder.com/600x400?text=言語サポート'">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-content">
+                        <h3 class="feature-title">言語サポートで安心の旅行</h3>
+                        <p class="feature-description">日本は素晴らしい国ですが、言語の壁が旅行者にとって大きな課題となることがあります。JapanConnectでは、日本語が話せる現地の人があなたをサポートします。</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check-circle"></i> レストランでのメニュー翻訳と注文サポート</li>
+                            <li><i class="fas fa-check-circle"></i> 交通機関の利用方法や切符の購入サポート</li>
+                            <li><i class="fas fa-check-circle"></i> 道案内や地図の読み方のサポート</li>
+                            <li><i class="fas fa-check-circle"></i> 緊急時の通訳サポート</li>
+                        </ul>
+                        <a href="{{ url_for('search_results') }}" class="btn btn-primary">ヘルパーを探す</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特徴詳細セクション2 -->
+    <section class="service-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                    <div class="feature-img">
+                        <img src="{{ url_for('static', filename='images/feature2.jpg') }}" alt="地元の体験" onerror="this.src='https://via.placeholder.com/600x400?text=地元の体験'">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="feature-content">
+                        <h3 class="feature-title">地元の人と一緒に本当の日本を体験</h3>
+                        <p class="feature-description">観光客向けの場所だけでなく、地元の人が実際に行くお店や場所を訪れることで、より深い日本の文化や生活を体験できます。</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check-circle"></i> 地元の人お勧めの穴場レストラン</li>
+                            <li><i class="fas fa-check-circle"></i> 観光客があまり訪れない隠れた名所</li>
+                            <li><i class="fas fa-check-circle"></i> 地元のお祭りやイベントへの参加</li>
+                            <li><i class="fas fa-check-circle"></i> 日本の家庭料理や文化体験</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">体験を探す</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特徴詳細セクション3 -->
+    <section class="service-section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="feature-img">
+                        <img src="{{ url_for('static', filename='images/feature3.jpg') }}" alt="安心のサポート" onerror="this.src='https://via.placeholder.com/600x400?text=安心のサポート'">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-content">
+                        <h3 class="feature-title">24時間安心のサポート体制</h3>
+                        <p class="feature-description">旅行中に困ったことがあれば、いつでもJapanConnectのヘルパーに相談できます。急な予定変更や緊急時にも対応します。</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check-circle"></i> 24時間対応のヘルプデスク</li>
+                            <li><i class="fas fa-check-circle"></i> 緊急時の医療機関案内</li>
+                            <li><i class="fas fa-check-circle"></i> 予定変更時のサポート</li>
+                            <li><i class="fas fa-check-circle"></i> 紛失物のサポート</li>
+                        </ul>
+                        <a href="{{ url_for('pricing') }}" class="btn btn-primary">料金プランを見る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA セクション -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">あなたも JapanConnect を始めませんか？</h2>
+                <p class="cta-description">言語の壁を超えて、より深い日本の体験を。または、あなたの知識を活かして旅行者をサポートしましょう。</p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('traveler_signup') }}" class="btn btn-cta mr-3">旅行者として登録</a>
+                    <a href="{{ url_for('guide_signup') }}" class="btn btn-outline-light">ガイドとして登録</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h3 class="footer-logo">JapanConnect</h3>
+                    <p class="footer-description">日本人と外国人をつなぎ、言語の壁を超えた体験を提供するプラットフォームです。</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="footer-heading">サービス</h5>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('search_results') }}">ヘルパーを探す</a></li>
+                        <li><a href="#">ガイドになる</a></li>
+                        <li><a href="{{ url_for('pricing') }}">料金プラン</a></li>
+                        <li><a href="#">よくある質問</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="footer-heading">会社情報</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">私たちについて</a></li>
+                        <li><a href="#">ブログ</a></li>
+                        <li><a href="#">採用情報</a></li>
+                        <li><a href="{{ url_for('contact_page') }}">お問い合わせ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5 class="footer-heading">お問い合わせ</h5>
+                    <ul class="footer-links">
+                        <li>
+                            <i class="fas fa-map-marker-alt mr-3"></i> 東京都渋谷区〇〇 1-2-3
+                        </li>
+                        <li>
+                            <i class="fas fa-phone mr-3"></i> 03-1234-5678
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope mr-3"></i> info@japanconnect.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2023 JapanConnect. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // スクロール時のヘッダー変更
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

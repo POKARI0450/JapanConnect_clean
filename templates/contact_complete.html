@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせ完了 - JapanConnect</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        .header {
+            background-color: #8D6E63; /* 茶色のヘッダー */
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+        .complete-section {
+            padding: 60px 0;
+            margin-bottom: 60px;
+        }
+        .complete-card {
+            background-color: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(93, 64, 55, 0.15);
+            text-align: center;
+        }
+        .check-icon {
+            font-size: 80px;
+            color: #8D6E63; /* 茶色のアイコン */
+            margin-bottom: 30px;
+        }
+        .page-title {
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #5D4037; /* 濃い茶色のタイトル */
+        }
+        .btn-home {
+            background-color: #8D6E63; /* 茶色のボタン */
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+        .btn-home:hover {
+            background-color: #6D4C41; /* 濃い茶色のホバー */
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(93, 64, 55, 0.2);
+        }
+        .nav-link {
+            color: white;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            color: #EFEBE9; /* 薄い茶色のホバー */
+        }
+        .complete-decoration {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-color: #D7CCC8; /* 薄い茶色の装飾 */
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: -1;
+        }
+        .decoration-1 {
+            top: 100px;
+            left: -50px;
+        }
+        .decoration-2 {
+            bottom: 100px;
+            right: -50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 装飾要素 -->
+    <div class="complete-decoration decoration-1"></div>
+    <div class="complete-decoration decoration-2"></div>
+    
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="m-0"><a href="{{ url_for('index') }}" class="text-white text-decoration-none">JapanConnect</a></h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">ホーム</a></li>
+                        <li class="nav-item"><a href="{{ url_for('pricing') }}" class="nav-link">料金プラン</a></li>
+                        <li class="nav-item"><a href="{{ url_for('contact_page') }}" class="nav-link">お問い合わせ</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="complete-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="complete-card">
+                            <i class="fas fa-check-circle check-icon"></i>
+                            <h2 class="page-title">お問い合わせありがとうございます</h2>
+                            <p class="lead">{{ name }}様、お問い合わせを受け付けました。</p>
+                            <p>ご入力いただいたメールアドレス（{{ email }}）宛に、担当者から折り返しご連絡いたします。</p>
+                            <p class="text-muted mt-4">通常、お問い合わせから1〜2営業日以内にご返信いたします。</p>
+                            <div class="mt-5">
+                                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg btn-home">トップページに戻る</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 
