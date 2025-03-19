@@ -50,3 +50,14 @@ if __name__ == "__main__":
     else:
         print("Backup failed.")
         sys.exit(1)
+
+# プロジェクトディレクトリをパスに追加
+path = '/home/pokamoto/japanconnect_1'  # GitHubからクローンした場合
+# または
+# path = '/home/pokamoto/mysite'  # 既存のディレクトリを使用する場合
+
+if path not in sys.path:
+    sys.path.append(path)
+
+# Flaskアプリケーションをインポート
+from app import app as application

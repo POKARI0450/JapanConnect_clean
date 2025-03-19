@@ -4,146 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ヘルパー一覧 - JapanConnect</title>
-    <link rel="stylesheet" href="{{ static_css() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .helper-card {
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            margin-bottom: 30px;
-            position: relative;
-            cursor: pointer;
             background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
         }
+        
         .helper-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
         }
-        .helper-card .card-img-container {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
+        
+        .helper-info {
+            padding: 1.5rem;
         }
-        .helper-card .card-img-top {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+        
+        .helper-info h5 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
         }
-        .helper-card:hover .card-img-top {
-            transform: scale(1.1);
+        
+        .helper-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
-        .helper-card .card-body {
-            padding: 20px;
+        
+        .helper-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
-        .helper-card .card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .helper-card .badge {
-            margin-right: 5px;
+        
+        .helper-tag {
+            background-color: #f0f0f0;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
             font-size: 0.8rem;
+            color: #555;
         }
-        .helper-card .rating {
-            color: #ffc107;
-            margin-right: 5px;
-        }
-        .helper-card .likes {
-            color: #dc3545;
-        }
-        .helper-card .card-footer {
-            background-color: transparent;
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding: 15px 20px;
-        }
-        .helper-card .btn-contact {
-            background-color: #4a6da7;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 8px 20px;
-            transition: all 0.3s ease;
-        }
-        .helper-card .btn-contact:hover {
-            background-color: #3a5a8f;
-            transform: scale(1.05);
-        }
-        /* モーダルスタイル */
-        .modal-content {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .modal-header {
-            background-color: #4a6da7;
-            color: white;
-            border-bottom: none;
-        }
-        .modal-body {
-            padding: 30px;
-        }
-        .profile-header {
+        
+        .helper-rating {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
         }
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 20px;
+        
+        .helper-rating .stars {
+            color: #ffc107;
+            margin-right: 0.5rem;
         }
-        .profile-info h3 {
-            margin-bottom: 5px;
-        }
-        .profile-stats {
+        
+        .helper-actions {
             display: flex;
             justify-content: space-between;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
         }
+        
+        .helper-actions .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* プロフィールモーダル */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .profile-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
         .stat-item {
             text-align: center;
         }
+        
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #4a6da7;
+            color: var(--primary-color);
         }
-        .qualification-item {
-            background-color: #f8f9fa;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+        
+        .profile-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .skill-list, .support-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .skill-item, .support-item {
+            background-color: #f9f9f9;
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
             display: flex;
             align-items: center;
         }
-        .qualification-item i {
-            margin-right: 10px;
-            color: #4a6da7;
+        
+        .skill-item i, .support-item i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
         }
-        /* チャットスタイル */
-        .chat-container {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
+        
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
         }
+        
+        /* チャットモーダル */
+        .chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 2rem;
+            width: 350px;
+            background-color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            box-shadow: var(--box-shadow);
+            z-index: 900;
+        }
+        
         .chat-header {
-            background-color: #f8f9fa;
-            padding: 10px 15px;
-            border-bottom: 1px solid #ddd;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        
         .chat-messages {
             height: 300px;
             overflow-y: auto;
-            padding: 15px;
-            background-color: #fff;
+            padding: 1rem;
         }
         .message {
             margin-bottom: 15px;
@@ -172,314 +230,440 @@
         }
         .chat-input {
             display: flex;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #ddd;
+            padding: 1rem;
+            border-top: 1px solid #eee;
         }
+        
         .chat-input input {
-            flex-grow: 1;
-            margin-right: 10px;
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+        
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="container my-5">
-        <h1 class="mb-4">ヘルパー一覧</h1>
+    <!-- 統一されたヘッダー -->
+    <header>
+        <div class="header-container">
+            <h1>JapanConnect</h1>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                <li><a href="{{ url_for('register') }}?type=guide">ガイドになる</a></li>
+                <li><a href="{{ url_for('pricing') }}">料金プラン</a></li>
+                <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>ヘルパー一覧</h2>
+                <p>あなたの日本での生活をサポートするヘルパーを見つけましょう</p>
+            </div>
+        </section>
         
-        <div class="row">
-            {% for helper in helpers %}
-            <div class="col-md-4 mb-4">
-                <div class="helper-card" id="helper-{{ helper.id }}" data-bs-toggle="modal" data-bs-target="#helperModal{{ helper.id }}">
-                    <div class="card-img-container">
-                        {% if helper.profile and helper.profile.photo %}
-                        <img src="{{ url_for('static', filename='images/' + helper.profile.photo) }}" class="card-img-top" alt="{{ helper.username }}" onerror="this.src='{{ url_for('static', filename='images/default_profile.jpg') }}'">
-                        {% else %}
-                        <img src="{{ url_for('static', filename='images/default_profile.jpg') }}" class="card-img-top" alt="デフォルト画像">
-                        {% endif %}
+        <section class="search-filters">
+            <div class="container">
+                <form class="filter-form">
+                    <div class="form-group">
+                        <label for="language">言語</label>
+                        <select id="language" name="language">
+                            <option value="">すべて</option>
+                            <option value="日本語">日本語</option>
+                            <option value="英語">英語</option>
+                            <option value="中国語">中国語</option>
+                            <option value="韓国語">韓国語</option>
+                        </select>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ helper.username }}</h5>
-                        {% if helper.profile %}
-                        <p class="card-text">{{ helper.profile.intro }}</p>
-                        <div class="mb-2">
-                            {% for language in helper.profile.languages.split(',') %}
-                            <span class="badge bg-info">{{ language }}</span>
-                            {% endfor %}
-                            <span class="badge bg-secondary">{{ helper.profile.region }}</span>
+                    
+                    <div class="form-group">
+                        <label for="area">エリア</label>
+                        <select id="area" name="area">
+                            <option value="">すべて</option>
+                            <option value="東京">東京</option>
+                            <option value="神奈川">神奈川</option>
+                            <option value="横浜">横浜</option>
+                            <option value="川崎">川崎</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skill">スキル</label>
+                        <select id="skill" name="skill">
+                            <option value="">すべて</option>
+                            <option value="観光案内">観光案内</option>
+                            <option value="ビジネス通訳">ビジネス通訳</option>
+                            <option value="文化体験">文化体験</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">検索</button>
+                </form>
+            </div>
+        </section>
+        
+        <section class="helper-results">
+            <div class="container">
+                <div class="helper-list">
+                    <!-- 山田太郎 -->
+                    <div class="helper-card">
+                        <div class="helper-info">
+                            <h5>山田太郎</h5>
+                            <p>東京都在住。長年の経験をもとにサポートします。</p>
+                            <div class="helper-tags">
+                                <span class="helper-tag">日本語</span>
+                                <span class="helper-tag">英語</span>
+                                <span class="helper-tag">東京</span>
+                                <span class="helper-tag">神奈川</span>
+                            </div>
+                            <div class="helper-rating">
+                                <div class="stars">
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span>0/5 (0件)</span>
+                            </div>
+                            <div class="helper-actions">
+                                <button class="btn btn-primary show-profile" data-id="yamada">詳細を見る</button>
+                                <span><i class="far fa-heart"></i> 0</span>
+                            </div>
                         </div>
-                        {% endif %}
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="rating">
-                                    <i class="fas fa-star"></i> {{ helper.rating }}/5
-                                </span>
-                                <span class="text-muted">({{ helper.rating_count }}件)</span>
-                            </div>
-                            <div class="likes">
-                                <i class="fas fa-heart"></i> {{ helper.likes|default(0) }}
-                            </div>
-                        </div>
                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-contact w-100">詳細を見る</button>
-                    </div>
-                </div>
-                
-                <!-- ヘルパー詳細モーダル -->
-                <div class="modal fade" id="helperModal{{ helper.id }}" tabindex="-1" aria-labelledby="helperModalLabel{{ helper.id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="helperModalLabel{{ helper.id }}">{{ helper.username }}のプロフィール</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                    <!-- 佐藤花子 -->
+                    <div class="helper-card">
+                        <div class="helper-info">
+                            <h5>佐藤花子</h5>
+                            <p>新人ですが情熱を持ってお手伝いします！</p>
+                            <div class="helper-tags">
+                                <span class="helper-tag">英語</span>
+                                <span class="helper-tag">中国語</span>
+                                <span class="helper-tag">横浜</span>
+                                <span class="helper-tag">川崎</span>
                             </div>
-                            <div class="modal-body">
-                                <div class="profile-header">
-                                    {% if helper.profile and helper.profile.photo %}
-                                    <img src="{{ url_for('static', filename='images/' + helper.profile.photo) }}" class="profile-image" alt="{{ helper.username }}" onerror="this.src='{{ url_for('static', filename='images/default_profile.jpg') }}'">
-                                    {% else %}
-                                    <img src="{{ url_for('static', filename='images/default_profile.jpg') }}" class="profile-image" alt="デフォルト画像">
-                                    {% endif %}
-                                    <div class="profile-info">
-                                        <h3>{{ helper.username }}</h3>
-                                        {% if helper.profile %}
-                                        <p>{{ helper.profile.intro }}</p>
-                                        <div>
-                                            {% for language in helper.profile.languages.split(',') %}
-                                            <span class="badge bg-info">{{ language }}</span>
-                                            {% endfor %}
-                                            <span class="badge bg-secondary">{{ helper.profile.region }}</span>
-                                        </div>
-                                        {% endif %}
-                                    </div>
+                            <div class="helper-rating">
+                                <div class="stars">
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
                                 </div>
-                                
-                                <div class="profile-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-value">{{ helper.rating }}</div>
-                                        <div class="stat-label">評価</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-value">{{ helper.rating_count }}</div>
-                                        <div class="stat-label">レビュー</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-value">{{ helper.help_count }}</div>
-                                        <div class="stat-label">サポート</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-value">{{ helper.likes|default(0) }}</div>
-                                        <div class="stat-label">いいね</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <h4>資格・スキル</h4>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-award"></i> TOEIC 900点
-                                    </div>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-certificate"></i> 英検準1級
-                                    </div>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-graduation-cap"></i> 通訳案内士（英語）
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <h4>得意なサポート</h4>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-map-marker-alt"></i> 東京都内の観光案内
-                                    </div>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-utensils"></i> 日本食の紹介
-                                    </div>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-briefcase"></i> ビジネス通訳
-                                    </div>
-                                    <div class="qualification-item">
-                                        <i class="fas fa-theater-masks"></i> 文化体験のアレンジ
-                                    </div>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">閉じる</button>
-                                    <button type="button" class="btn btn-primary" onclick="startChat('{{ helper.id }}', '{{ helper.username }}')">メッセージを送る</button>
-                                </div>
+                                <span>0/5 (0件)</span>
+                            </div>
+                            <div class="helper-actions">
+                                <button class="btn btn-primary show-profile" data-id="sato">詳細を見る</button>
+                                <span><i class="far fa-heart"></i> 0</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+        </section>
+    </main>
+    
+    <!-- 山田太郎のプロフィールモーダル -->
+    <div id="yamadaProfile" class="profile-modal">
+        <div class="profile-content">
+            <span class="close-btn">&times;</span>
+            <div class="profile-header">
+                <h3>山田太郎</h3>
+                <p>東京都在住。長年の経験をもとにサポートします。</p>
+                <div class="helper-tags">
+                    <span class="helper-tag">日本語</span>
+                    <span class="helper-tag">英語</span>
+                    <span class="helper-tag">東京</span>
+                    <span class="helper-tag">神奈川</span>
+                </div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">評価</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">レビュー</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">サポート</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">いいね</div>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h4>資格・スキル</h4>
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>TOEIC 900点</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>英検準1級</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>通訳案内士（英語）</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h4>得意なサポート</h4>
+                <div class="support-list">
+                    <div class="support-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>東京都内の観光案内</span>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-utensils"></i>
+                        <span>日本食の紹介</span>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>ビジネス通訳</span>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-theater-masks"></i>
+                        <span>文化体験のアレンジ</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button class="btn btn-primary show-chat" data-id="yamada">メッセージを送る</button>
+                <button class="btn btn-secondary">このヘルパーとマッチングする</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 佐藤花子のプロフィールモーダル -->
+    <div id="satoProfile" class="profile-modal">
+        <div class="profile-content">
+            <span class="close-btn">&times;</span>
+            <div class="profile-header">
+                <h3>佐藤花子</h3>
+                <p>新人ですが情熱を持ってお手伝いします！</p>
+                <div class="helper-tags">
+                    <span class="helper-tag">英語</span>
+                    <span class="helper-tag">中国語</span>
+                    <span class="helper-tag">横浜</span>
+                    <span class="helper-tag">川崎</span>
+                </div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">評価</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">レビュー</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">サポート</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">いいね</div>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h4>資格・スキル</h4>
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>TOEIC 900点</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>英検準1級</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>通訳案内士（英語）</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h4>得意なサポート</h4>
+                <div class="support-list">
+                    <div class="support-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>東京都内の観光案内</span>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-utensils"></i>
+                        <span>日本食の紹介</span>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>ビジネス通訳</span>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-theater-masks"></i>
+                        <span>文化体験のアレンジ</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button class="btn btn-primary show-chat" data-id="sato">メッセージを送る</button>
+                <button class="btn btn-secondary">このヘルパーとマッチングする</button>
+            </div>
         </div>
     </div>
     
     <!-- チャットモーダル -->
-    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="chatModalTitle">ヘルパーとのチャット</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages">
-                            <!-- チャットメッセージがここに表示されます -->
-                        </div>
-                        <div class="chat-input">
-                            <input type="text" id="messageInput" class="form-control" placeholder="メッセージを入力...">
-                            <button class="btn btn-primary" id="sendMessageBtn">送信</button>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-success" id="matchBtn">このヘルパーとマッチングする</button>
-                    </div>
-                </div>
-            </div>
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-header">
+            <h4>ヘルパーとのチャット</h4>
+            <span class="close-chat">&times;</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- メッセージはJavaScriptで動的に追加 -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="メッセージを入力...">
+            <button id="sendMessage">送信</button>
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 統一されたフッター -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>JapanConnect</h2>
+                    <p>日本での生活をサポートするプラットフォーム</p>
+                </div>
+                <div class="footer-links">
+                    <h3>リンク</h3>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                        <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                        <li><a href="{{ url_for('register') }}?type=guide">ガイドになる</a></li>
+                        <li><a href="{{ url_for('pricing') }}">料金プラン</a></li>
+                        <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>お問い合わせ</h3>
+                    <p>メール: info@japanconnect.com</p>
+                    <p>電話: 03-1234-5678</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 JapanConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script>
-        // ページ読み込み時に佐藤花子の詳細を自動表示
-        document.addEventListener('DOMContentLoaded', function() {
-            // 佐藤花子のIDを指定（実際のアプリケーションでは動的に取得する必要があります）
-            const satoHanakoId = '2'; // 佐藤花子のIDを2と仮定
-            
-            // 少し遅延させて表示（ページの読み込みが完了してから）
-            setTimeout(() => {
-                const satoHanakoCard = document.getElementById(`helper-${satoHanakoId}`);
-                if (satoHanakoCard) {
-                    // カードをスクロールして表示
-                    satoHanakoCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // カードをハイライト
-                    satoHanakoCard.classList.add('highlighted-card');
-                    
-                    // モーダルを表示
-                    setTimeout(() => {
-                        const satoHanakoModal = new bootstrap.Modal(document.getElementById(`helperModal${satoHanakoId}`));
-                        satoHanakoModal.show();
-                    }, 1000);
-                }
-            }, 500);
+        // プロフィールモーダルの表示・非表示
+        const showProfileBtns = document.querySelectorAll('.show-profile');
+        const profileModals = document.querySelectorAll('.profile-modal');
+        const closeBtns = document.querySelectorAll('.close-btn');
+        
+        showProfileBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const profileId = this.getAttribute('data-id');
+                document.getElementById(profileId + 'Profile').style.display = 'block';
+            });
         });
         
-        // チャット開始
-        function startChat(helperId, helperName) {
-            // ヘルパー詳細モーダルを閉じる
-            const helperModal = bootstrap.Modal.getInstance(document.getElementById(`helperModal${helperId}`));
-            helperModal.hide();
-            
-            // チャットモーダルのタイトルを設定
-            document.getElementById('chatModalTitle').textContent = `${helperName}とのチャット`;
-            
-            // チャットメッセージをクリア
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML = '';
-            
-            // 初期メッセージを追加
-            addMessage('received', 'こんにちは！どのようなサポートが必要ですか？');
-            
-            // マッチングボタンにヘルパーIDを設定
-            document.getElementById('matchBtn').setAttribute('data-helper-id', helperId);
-            document.getElementById('matchBtn').setAttribute('data-helper-name', helperName);
-            
-            // 送信ボタンにヘルパーIDを設定
-            document.getElementById('sendMessageBtn').setAttribute('data-helper-id', helperId);
-            
-            // チャットモーダルを表示
-            const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-            chatModal.show();
-            
-            // メッセージ入力欄にフォーカス
-            document.getElementById('messageInput').focus();
-            
-            // 送信ボタンのイベントリスナーを設定
-            document.getElementById('sendMessageBtn').onclick = function() {
-                sendMessage();
-            };
-            
-            // Enterキーでメッセージ送信
-            document.getElementById('messageInput').onkeypress = function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                    e.preventDefault();
-                }
-            };
-            
-            // マッチングボタンのイベントリスナーを設定
-            document.getElementById('matchBtn').onclick = function() {
-                const hId = this.getAttribute('data-helper-id');
-                const hName = this.getAttribute('data-helper-name');
-                confirmMatch(hId, hName);
-            };
-        }
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.profile-modal');
+                modal.style.display = 'none';
+            });
+        });
         
-        // メッセージを追加
-        function addMessage(type, text) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            
-            const now = new Date();
-            const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-content">${text}</div>
-                <span class="message-time">今日 ${timeString}</span>
-            `;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+        // チャットモーダルの表示・非表示
+        const showChatBtns = document.querySelectorAll('.show-chat');
+        const chatModal = document.getElementById('chatModal');
+        const closeChat = document.querySelector('.close-chat');
         
-        // メッセージを送信
-        function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
+        showChatBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                chatModal.style.display = 'block';
+            });
+        });
+        
+        closeChat.addEventListener('click', function() {
+            chatModal.style.display = 'none';
+        });
+        
+        // メッセージ送信
+        const sendMessageBtn = document.getElementById('sendMessage');
+        const messageInput = document.getElementById('messageInput');
+        const chatMessages = document.getElementById('chatMessages');
+        
+        sendMessageBtn.addEventListener('click', function() {
             const message = messageInput.value.trim();
-            
             if (message) {
-                // 送信メッセージを追加
-                addMessage('sent', message);
-                
-                // 入力欄をクリア
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message sent';
+                messageElement.innerHTML = `<p>${message}</p>`;
+                chatMessages.appendChild(messageElement);
                 messageInput.value = '';
-                
-                // 自動返信（デモ用）
-                setTimeout(() => {
-                    addMessage('received', 'ありがとうございます。どのようなサポートをご希望ですか？');
-                }, 1000);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
-        }
+        });
         
-        // マッチング確認
-        function confirmMatch(helperId, helperName) {
-            if (confirm(`${helperName}さんとマッチングしますか？マッチング後はメッセージのやり取りが可能になります。`)) {
-                alert(`${helperName}さんとのマッチングが成立しました！これからメッセージでやり取りを続けることができます。`);
-                
-                // チャットモーダルを閉じる
-                const chatModal = bootstrap.Modal.getInstance(document.getElementById('chatModal'));
-                chatModal.hide();
-                
-                // マッチング後のページに遷移（実際のアプリケーションでは実装が必要）
-                // window.location.href = `/chat/${helperId}`;
-                
-                // デモ用：マッチング成功メッセージを表示
-                const successDiv = document.createElement('div');
-                successDiv.className = 'alert alert-success mt-3';
-                successDiv.innerHTML = `<strong>マッチング成功!</strong> ${helperName}さんとのマッチングが成立しました。メッセージでやり取りを続けることができます。`;
-                document.querySelector('.container').prepend(successDiv);
-                
-                // 5秒後にメッセージを消す
-                setTimeout(() => {
-                    successDiv.remove();
-                }, 5000);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessageBtn.click();
+                e.preventDefault();
             }
-        }
+        });
+        
+        // ウィンドウクリックでモーダルを閉じる
+        window.addEventListener('click', function(e) {
+            profileModals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html> 

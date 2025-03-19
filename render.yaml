@@ -11,3 +11,4 @@ services:
         generateValue: true
       - key: FLASK_ENV
         value: production
+    autoDeploy: true

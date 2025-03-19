@@ -1,40 +1,151 @@
-{% extends "layout.html" %}
-{% block title %}ヘルパー登録 - JapanConnect{% endblock %}
-{% block content %}
-<h2 class="mb-4">ヘルパー登録</h2>
-<form method="post" action="{{ url_for('register') }}">
-  <div class="mb-3">
-    <label for="username" class="form-label">ユーザー名</label>
-    <input type="text" class="form-control" id="username" name="username" required>
-  </div>
-  <div class="mb-3">
-    <label for="email" class="form-label">メールアドレス</label>
-    <input type="email" class="form-control" id="email" name="email" required>
-  </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">パスワード</label>
-    <input type="password" class="form-control" id="password" name="password" required>
-  </div>
-  <div class="mb-3">
-    <label for="introduction" class="form-label">自己紹介</label>
-    <textarea class="form-control" id="introduction" name="introduction"></textarea>
-  </div>
-  <div class="mb-3">
-    <label for="languages" class="form-label">対応可能言語 (カンマ区切り)</label>
-    <input type="text" class="form-control" id="languages" name="languages">
-  </div>
-  <div class="mb-3">
-    <label for="area" class="form-label">提供地域</label>
-    <input type="text" class="form-control" id="area" name="area">
-  </div>
-  <div class="mb-3">
-    <label for="experience" class="form-label">経験</label>
-    <input type="text" class="form-control" id="experience" name="experience">
-  </div>
-  <div class="mb-3">
-    <label for="photo" class="form-label">画像URL</label>
-    <input type="text" class="form-control" id="photo" name="photo">
-  </div>
-  <button type="submit" class="btn btn-primary">登録する</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>会員登録 - JapanConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>JapanConnect</h1>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                <li><a href="#">ガイドになる</a></li>
+                <li><a href="#">料金プラン</a></li>
+                <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>会員登録</h2>
+                {% if user_type == 'traveler' %}
+                <p>旅行者として登録して、日本での体験をより豊かにしましょう。</p>
+                {% else %}
+                <p>ガイドとして登録して、あなたのスキルを活かしましょう。</p>
+                {% endif %}
+            </div>
+        </section>
+        
+        <section class="register-form">
+            <div class="container">
+                <form method="post" action="{{ url_for('register') }}">
+                    <input type="hidden" name="user_type" value="{{ user_type }}">
+                    
+                    <div class="form-group">
+                        <label for="name">お名前</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">メールアドレス</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">パスワード</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password_confirm">パスワード（確認）</label>
+                        <input type="password" id="password_confirm" name="password_confirm" required>
+                    </div>
+                    
+                    {% if user_type == 'guide' %}
+                    <div class="form-group">
+                        <label for="languages">話せる言語（複数選択可）</label>
+                        <select id="languages" name="languages" multiple>
+                            <option value="japanese">日本語</option>
+                            <option value="english">英語</option>
+                            <option value="chinese">中国語</option>
+                            <option value="korean">韓国語</option>
+                            <option value="spanish">スペイン語</option>
+                            <option value="french">フランス語</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">活動地域</label>
+                        <select id="location" name="location">
+                            <option value="tokyo">東京</option>
+                            <option value="osaka">大阪</option>
+                            <option value="kyoto">京都</option>
+                            <option value="fukuoka">福岡</option>
+                            <option value="sapporo">札幌</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bio">自己紹介</label>
+                        <textarea id="bio" name="bio" rows="5"></textarea>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="terms" required>
+                            <a href="#">利用規約</a>に同意します
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">登録する</button>
+                </form>
+                
+                <div class="login-link">
+                    <p>すでにアカウントをお持ちの方は <a href="#">こちら</a> からログイン</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>JapanConnect</h2>
+                    <p>日本での生活をサポートするプラットフォーム</p>
+                </div>
+                <div class="footer-links">
+                    <h3>リンク</h3>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                        <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                        <li><a href="#">ガイドになる</a></li>
+                        <li><a href="#">料金プラン</a></li>
+                        <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>お問い合わせ</h3>
+                    <p>メール: info@japanconnect.com</p>
+                    <p>電話: 03-1234-5678</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 JapanConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
