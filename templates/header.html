@@ -1,0 +1,33 @@
+<header>
+    <div class="header-container">
+        <h1>JapanConnect</h1>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    <nav id="mainNav">
+        <ul>
+            <li><a href="{{ url_for('index') }}">ホーム</a></li>
+            <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+            
+            {% if user_id %}
+                <!-- ログイン済みの場合 -->
+                {% if user_type == 'helper' %}
+                    <li><a href="{{ url_for('dashboard') }}">ダッシュボード</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('profile') }}">プロフィール</a></li>
+                <li><a href="{{ url_for('logout') }}">ログアウト</a></li>
+            {% else %}
+                <!-- 未ログインの場合 -->
+                <li><a href="{{ url_for('register') }}?type=guide">ガイドになる</a></li>
+                <li><a href="{{ url_for('login') }}">ログイン</a></li>
+                <li><a href="{{ url_for('register') }}">新規登録</a></li>
+            {% endif %}
+            
+            <li><a href="{{ url_for('pricing') }}">料金プラン</a></li>
+            <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+        </ul>
+    </nav>
+</header> 
