@@ -1,0 +1,27 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/japanconnect', '.']
+  
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/japanconnect']
+  
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'japanconnect'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/japanconnect'
+      - '--platform'
+      - 'managed'
+      - '--region'
+      - 'asia-northeast1'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '256Mi'
+      - '--set-env-vars'
+      - 'SUPABASE_URL=https://uwsvmipqroqbqotiyypt.supabase.co,SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3c3ZtaXBxcm9xYnFvdGl5eXB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzNjc4NzksImV4cCI6MjA1Nzk0Mzg3OX0.OurNtxec26ZowY8y6w9latJaFfPW3TPDB_QCBIcFuIg,SECRET_KEY=japanconnect_secure_key_2024'
