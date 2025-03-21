@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JapanConnect - 日本での体験を、もっと豊かに</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8D6E63;
+            --accent-color: #6D4C41;
+            --light-color: #FFF8E1;
+            --dark-color: #5D4037;
+            --gray-color: #757575;
+        }
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.6;
+            padding-top: 76px; /* ヘッダーの高さ分のパディング */
+        }
+        
+        /* ヘッダー */
+        .header {
+            background-color: var(--primary-color);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            padding: 8px 15px !important;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .nav-link.btn-outline-light {
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        
+        .nav-link.btn-light {
+            background-color: white;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link.btn-light:hover {
+            background-color: #f8f9fa;
+            color: var(--accent-color) !important;
+        }
+        
+        /* ヒーローセクション */
+        .hero-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/static/images/japan_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn-hero {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+            margin: 0 10px 10px;
+        }
+        
+        .btn-hero.btn-light {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .btn-hero.btn-light:hover {
+            background-color: #f8f9fa;
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-hero.btn-outline-light:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="header-container">
+            <h1>JapanConnect</h1>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                <li><a href="#">ガイドになる</a></li>
+                <li><a href="#">料金プラン</a></li>
+                <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ヒーローセクション -->
+    <section class="hero">
+        <h2>日本での生活をもっと快適に</h2>
+        <p>JapanConnectは、日本に住む外国人と日本人ヘルパーをつなぐプラットフォームです。</p>
+        <a href="#services" class="btn btn-hero">詳しく見る</a>
+    </section>
+
+    <!-- ユーザータイプセクション -->
+    <section class="user-types">
+        <div class="container">
+            <div class="user-type-card traveler">
+                <div class="icon-container">
+                    <i class="fas fa-suitcase"></i>
+                </div>
+                <h3>旅行者の方</h3>
+                <p>日本での旅行をサポートします。言語の壁を超えて、より深い日本の体験を。</p>
+                <a href="{{ url_for('register') }}?type=traveler" class="btn btn-primary">旅行者として登録</a>
+            </div>
+            
+            <div class="user-type-card guide">
+                <div class="icon-container">
+                    <i class="fas fa-map"></i>
+                </div>
+                <h3>ガイドの方</h3>
+                <p>あなたの知識と経験を活かして、旅行者をサポートしましょう。新しい出会いと収入を得られます。</p>
+                <a href="{{ url_for('register') }}?type=guide" class="btn btn-secondary">ガイドとして登録</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- サービスセクション -->
+    <section id="services" class="features">
+        <div class="container">
+            <h2>サービス内容</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="icon-container">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>言語サポート</h3>
+                    <p>日常会話から専門的な通訳まで、言語面でのサポートを提供します。</p>
+                </div>
+                <div class="feature">
+                    <div class="icon-container">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>生活サポート</h3>
+                    <p>銀行口座開設、携帯契約など、日本での生活立ち上げをサポートします。</p>
+                </div>
+                <div class="feature">
+                    <div class="icon-container">
+                        <i class="fas fa-torii-gate"></i>
+                    </div>
+                    <h3>文化体験</h3>
+                    <p>日本文化を体験できるアクティビティに地元の人と一緒に参加できます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 人気ガイドセクション -->
+    <section class="popular-guides">
+        <div class="container">
+            <h2>人気のガイド</h2>
+            <div class="guides-grid">
+                <div class="guide-card">
+                    <div class="guide-image">
+                        <i class="fas fa-user-circle fa-5x" style="color: #ccc; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;"></i>
+                    </div>
+                    <div class="guide-info">
+                        <h3>山田 太郎</h3>
+                        <p>東京在住10年のガイドです。英語と中国語が話せます。東京の隠れた名所をご案内します！</p>
+                        <div class="guide-details">
+                            <p><strong>言語:</strong> 日本語, 英語, 中国語</p>
+                            <p><strong>地域:</strong> 東京</p>
+                            <div class="rating">
+                                <span class="stars">★★★★<span class="half">★</span></span>
+                                <span class="rating-text">4.5/5 (28件)</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline">詳細を見る</a>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-image">
+                        <i class="fas fa-user-circle fa-5x" style="color: #ccc; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;"></i>
+                    </div>
+                    <div class="guide-info">
+                        <h3>佐藤 花子</h3>
+                        <p>京都在住のガイドです。英語とフランス語が話せます。伝統的な京都の文化体験をご案内します。</p>
+                        <div class="guide-details">
+                            <p><strong>言語:</strong> 日本語, 英語, フランス語</p>
+                            <p><strong>地域:</strong> 京都</p>
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-text">5.0/5 (42件)</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline">詳細を見る</a>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-image">
+                        <i class="fas fa-user-circle fa-5x" style="color: #ccc; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;"></i>
+                    </div>
+                    <div class="guide-info">
+                        <h3>鈴木 一郎</h3>
+                        <p>大阪在住のガイドです。英語とスペイン語が話せます。大阪のグルメツアーが得意です！</p>
+                        <div class="guide-details">
+                            <p><strong>言語:</strong> 日本語, 英語, スペイン語</p>
+                            <p><strong>地域:</strong> 大阪</p>
+                            <div class="rating">
+                                <span class="stars">★★★★</span>
+                                <span class="rating-text">4.0/5 (35件)</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA セクション -->
+    <section class="cta">
+        <div class="container">
+            <h2>JapanConnectで日本での体験を豊かに</h2>
+            <p>今すぐ登録して、日本での生活をより快適に、より充実したものにしましょう。</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-large">無料で登録する</a>
+                <a href="{{ url_for('contact') }}" class="btn btn-large btn-outline-white">お問い合わせ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>JapanConnect</h2>
+                    <p>日本での生活をサポートするプラットフォーム</p>
+                </div>
+                <div class="footer-links">
+                    <h3>リンク</h3>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                        <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                        <li><a href="#">ガイドになる</a></li>
+                        <li><a href="#">料金プラン</a></li>
+                        <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>お問い合わせ</h3>
+                    <p>メール: info@japanconnect.com</p>
+                    <p>電話: 03-1234-5678</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 JapanConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 料金プランセクション (別ページ用) -->
+    <section class="pricing-section" style="background-color: #F5E9D9; padding: 100px 0;">
+        <div class="container">
+            <h2 class="section-title text-center" style="font-size: 2.8rem; font-weight: 700; margin-bottom: 30px; color: #5D4037;">料金プラン</h2>
+            <p class="section-description text-center" style="font-size: 1.3rem; max-width: 800px; margin: 0 auto 60px; color: #8D6E63;">あなたのニーズに合わせた柔軟なプランをご用意しています</p>
+            
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <div class="pricing-card" style="background-color: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); height: 100%; border: 1px solid #eee; transition: all 0.3s ease;">
+                        <div class="pricing-header" style="padding: 40px 30px; text-align: center; background-color: #FFF8E1; border-bottom: 1px solid #eee;">
+                            <h3 class="pricing-title" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; color: #5D4037;">ベーシック</h3>
+                            <div class="pricing-price" style="display: flex; justify-content: center; align-items: baseline;">
+                                <span class="currency" style="font-size: 1.5rem; font-weight: 600; color: #5D4037;">¥</span>
+                                <span class="amount" style="font-size: 3.5rem; font-weight: 700; color: #5D4037; line-height: 1; margin: 0 5px;">0</span>
+                                <span class="period" style="font-size: 1.1rem; color: #8D6E63;">/月</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features" style="padding: 40px 30px;">
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> ヘルパー検索
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> メッセージ機能（月5件まで）
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> コミュニティアクセス
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-times mr-3" style="color: #dc3545;"></i> <span style="color: #999;">優先サポート</span>
+                                </li>
+                                <li style="padding: 12px 0; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-times mr-3" style="color: #dc3545;"></i> <span style="color: #999;">広告非表示</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer" style="padding: 20px 30px 40px; text-align: center;">
+                            <a href="#" class="btn btn-outline-primary btn-lg" style="width: 100%; padding: 12px; font-weight: 600; border-radius: 8px; border: 2px solid #8D6E63; color: #8D6E63; background: transparent; font-size: 1.1rem;">選択する</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <div class="pricing-card featured" style="background-color: white; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 30px rgba(139, 69, 19, 0.2); height: 100%; border: 2px solid #8D6E63; transform: scale(1.05); position: relative; z-index: 1; transition: all 0.3s ease;">
+                        <div class="pricing-badge" style="position: absolute; top: 0; right: 30px; background-color: #8D6E63; color: white; padding: 5px 15px; font-size: 0.9rem; border-radius: 0 0 10px 10px; font-weight: 600;">人気</div>
+                        <div class="pricing-header" style="padding: 40px 30px; text-align: center; background-color: #FFF8E1; border-bottom: 1px solid #eee;">
+                            <h3 class="pricing-title" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; color: #5D4037;">スタンダード</h3>
+                            <div class="pricing-price" style="display: flex; justify-content: center; align-items: baseline;">
+                                <span class="currency" style="font-size: 1.5rem; font-weight: 600; color: #5D4037;">¥</span>
+                                <span class="amount" style="font-size: 3.5rem; font-weight: 700; color: #5D4037; line-height: 1; margin: 0 5px;">980</span>
+                                <span class="period" style="font-size: 1.1rem; color: #8D6E63;">/月</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features" style="padding: 40px 30px;">
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> ヘルパー検索
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> メッセージ機能（無制限）
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> コミュニティアクセス
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> 優先サポート
+                                </li>
+                                <li style="padding: 12px 0; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> 広告非表示
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer" style="padding: 20px 30px 40px; text-align: center;">
+                            <a href="#" class="btn btn-primary btn-lg" style="width: 100%; padding: 12px; font-weight: 600; border-radius: 8px; background-color: #8D6E63; border-color: #8D6E63; color: white; font-size: 1.1rem;">選択する</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="pricing-card" style="background-color: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); height: 100%; border: 1px solid #eee; transition: all 0.3s ease;">
+                        <div class="pricing-header" style="padding: 40px 30px; text-align: center; background-color: #FFF8E1; border-bottom: 1px solid #eee;">
+                            <h3 class="pricing-title" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; color: #5D4037;">プレミアム</h3>
+                            <div class="pricing-price" style="display: flex; justify-content: center; align-items: baseline;">
+                                <span class="currency" style="font-size: 1.5rem; font-weight: 600; color: #5D4037;">¥</span>
+                                <span class="amount" style="font-size: 3.5rem; font-weight: 700; color: #5D4037; line-height: 1; margin: 0 5px;">1,980</span>
+                                <span class="period" style="font-size: 1.1rem; color: #8D6E63;">/月</span>
+                            </div>
+                        </div>
+                        <div class="pricing-features" style="padding: 40px 30px;">
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> ヘルパー検索
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> メッセージ機能（無制限）
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> コミュニティアクセス
+                                </li>
+                                <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> 優先サポート
+                                </li>
+                                <li style="padding: 12px 0; display: flex; align-items: center; font-size: 1.1rem;">
+                                    <i class="fas fa-check mr-3" style="color: #28a745;"></i> 広告非表示
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer" style="padding: 20px 30px 40px; text-align: center;">
+                            <a href="#" class="btn btn-outline-primary btn-lg" style="width: 100%; padding: 12px; font-weight: 600; border-radius: 8px; border: 2px solid #8D6E63; color: #8D6E63; background: transparent; font-size: 1.1rem;">選択する</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お問い合わせセクション -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-center mb-4">お問い合わせ</h2>
+                    <div class="contact-form">
+                        <form action="{{ url_for('submit_contact') }}" method="post">
+                            <div class="form-group">
+                                <label for="name">お名前 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">メールアドレス <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">お問い合わせ内容 <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">送信する</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

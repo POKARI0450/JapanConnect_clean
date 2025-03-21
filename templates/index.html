@@ -1,13 +1,220 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JapanConnect</title>
+    <title>JapanConnect - 日本での生活をサポート</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Welcome to JapanConnect</h1>
-    <p>A platform connecting foreigners with Japanese helpers.</p>
-    <a href="{{ url_for('login') }}">Login</a> | <a href="{{ url_for('register') }}">Register</a>
+    <header>
+        <div class="header-container">
+            <h1>JapanConnect</h1>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                <li><a href="{{ url_for('register') }}?type=guide">ガイドになる</a></li>
+                <li><a href="{{ url_for('pricing') }}">料金プラン</a></li>
+                <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>日本での生活をもっと快適に</h2>
+                <p>JapanConnectは、日本に住む外国人と日本人ヘルパーをつなぐプラットフォームです。</p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('helpers') }}" class="btn btn-primary">ヘルパーを探す</a>
+                    <a href="{{ url_for('register') }}?type=guide" class="btn btn-secondary">ガイドになる</a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="user-types">
+            <div class="container">
+                <h2>あなたは？</h2>
+                <div class="user-type-grid">
+                    <div class="user-type">
+                        <i class="fas fa-globe-asia"></i>
+                        <h3>日本に住む外国人</h3>
+                        <p>言語の壁や文化の違いで困っていませんか？JapanConnectで日本人ヘルパーを見つけましょう。</p>
+                        <a href="{{ url_for('helpers') }}" class="btn">ヘルパーを探す</a>
+                    </div>
+                    <div class="user-type">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>外国人をサポートしたい日本人</h3>
+                        <p>あなたの言語スキルや知識を活かして、外国人の日本での生活をサポートしませんか？</p>
+                        <a href="{{ url_for('register') }}?type=guide" class="btn">ガイドになる</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="features">
+            <div class="container">
+                <h2>JapanConnectの特徴</h2>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <i class="fas fa-language"></i>
+                        <h3>言語サポート</h3>
+                        <p>日常会話から専門的な通訳まで、あなたの言語ニーズに合わせたサポートを提供します。</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-building"></i>
+                        <h3>住居探し</h3>
+                        <p>物件探しから契約手続きまで、日本での住居に関するサポートを提供します。</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-hospital"></i>
+                        <h3>医療サポート</h3>
+                        <p>病院の予約や診察の通訳など、医療に関するサポートを提供します。</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-utensils"></i>
+                        <h3>食事と文化</h3>
+                        <p>日本の食文化や地域の特色を知り尽くしたガイドが、あなたの体験をサポートします。</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-subway"></i>
+                        <h3>交通案内</h3>
+                        <p>複雑な日本の交通システムを、経験豊富なガイドがわかりやすく案内します。</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>ショッピング</h3>
+                        <p>買い物のサポートから、日本ならではの商品の紹介まで幅広くサポートします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="popular-guides">
+            <div class="container">
+                <h2>人気のガイド</h2>
+                <div class="guides-grid">
+                    <div class="guide-card">
+                        <div class="guide-image">
+                            <i class="fas fa-user-circle fa-5x" style="color: #ccc; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;"></i>
+                        </div>
+                        <div class="guide-info">
+                            <h3>山田 太郎</h3>
+                            <p>東京在住のガイドです。英語と中国語が話せます。東京の観光スポットや隠れた名所をご案内します。</p>
+                            <div class="guide-details">
+                                <p><i class="fas fa-language"></i> <strong>言語:</strong> 日本語, 英語, 中国語</p>
+                                <p><i class="fas fa-map-marker-alt"></i> <strong>地域:</strong> 東京</p>
+                                <div class="rating">
+                                    <div>
+                                        <span class="stars">★★★★★</span>
+                                        <span class="rating-text">4.9/5 (28件)</span>
+                                    </div>
+                                    <i class="fas fa-star" style="color: #f39c12;"></i>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-primary">詳細を見る</a>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <div class="guide-image">
+                            <i class="fas fa-user-circle fa-5x" style="color: #ccc; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;"></i>
+                        </div>
+                        <div class="guide-info">
+                            <h3>佐藤 花子</h3>
+                            <p>京都在住のガイドです。英語とフランス語が話せます。伝統的な京都の文化体験をご案内します。</p>
+                            <div class="guide-details">
+                                <p><i class="fas fa-language"></i> <strong>言語:</strong> 日本語, 英語, フランス語</p>
+                                <p><i class="fas fa-map-marker-alt"></i> <strong>地域:</strong> 京都</p>
+                                <div class="rating">
+                                    <div>
+                                        <span class="stars">★★★★★</span>
+                                        <span class="rating-text">5.0/5 (42件)</span>
+                                    </div>
+                                    <i class="fas fa-star" style="color: #f39c12;"></i>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-primary">詳細を見る</a>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-card">
+                        <div class="guide-image">
+                            <i class="fas fa-user-circle fa-5x" style="color: #ccc; display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;"></i>
+                        </div>
+                        <div class="guide-info">
+                            <h3>鈴木 一郎</h3>
+                            <p>大阪在住のガイドです。英語とスペイン語が話せます。大阪のグルメツアーが得意です！</p>
+                            <div class="guide-details">
+                                <p><i class="fas fa-language"></i> <strong>言語:</strong> 日本語, 英語, スペイン語</p>
+                                <p><i class="fas fa-map-marker-alt"></i> <strong>地域:</strong> 大阪</p>
+                                <div class="rating">
+                                    <div>
+                                        <span class="stars">★★★★</span>
+                                        <span class="rating-text">4.0/5 (35件)</span>
+                                    </div>
+                                    <i class="fas fa-thumbs-up" style="color: #f39c12;"></i>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-primary">詳細を見る</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta">
+            <div class="container">
+                <h2>今すぐ始めましょう</h2>
+                <p>JapanConnectで、日本での生活をもっと豊かに、もっと便利に。</p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('register') }}?type=traveler" class="btn btn-primary">旅行者として登録</a>
+                    <a href="{{ url_for('register') }}?type=guide" class="btn btn-secondary">ガイドとして登録</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>JapanConnect</h2>
+                    <p>日本での生活をサポートするプラットフォーム</p>
+                </div>
+                <div class="footer-links">
+                    <h3>リンク</h3>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">ホーム</a></li>
+                        <li><a href="{{ url_for('helpers') }}">ヘルパーを探す</a></li>
+                        <li><a href="{{ url_for('register') }}?type=guide">ガイドになる</a></li>
+                        <li><a href="{{ url_for('pricing') }}">料金プラン</a></li>
+                        <li><a href="{{ url_for('contact') }}">お問い合わせ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>お問い合わせ</h3>
+                    <p>メール: info@japanconnect.com</p>
+                    <p>電話: 03-1234-5678</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 JapanConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
     
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
