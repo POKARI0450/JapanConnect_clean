@@ -3,6 +3,7 @@ import os
 from supabase import create_client
 from dotenv import load_dotenv
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from datetime import datetime
 
 # .envファイルから環境変数を読み込む
 load_dotenv()
@@ -44,7 +45,8 @@ def load_user(user_id):
 
 @app.route('/')
 def home():
-    return render_template('index.html')  # 'Hello, World!'の代わりにindex.htmlを表示
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return render_template('index.html', now=now)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -93,4 +95,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
-# Updated on Fri Mar 21 23:22:05 JST 2025
